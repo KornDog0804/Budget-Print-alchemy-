@@ -3,303 +3,193 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Budget Print Alchemy — Fails, Fixes, Speed Tests</title>
-  <meta name="description" content="I push my 3D printer until it screams so you don’t have to. Fails, fixes, speed tests, and dumb ideas that sometimes work. Custom prints + printer help." />
+  <title>Budget Print Alchemy — Push It Past the Limit</title>
+  <meta name="description" content="I push my 3D printer until it screams so you don’t have to. Fails, fixes, speed tests, and dumb ideas that sometimes work." />
 
-  <!-- Social preview -->
-  <meta property="og:title" content="Budget Print Alchemy" />
-  <meta property="og:description" content="Fails, fixes, speed tests, and dumb ideas that sometimes work. Custom prints + printer help." />
-  <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#070a0f" />
+  <meta name="theme-color" content="#0b0f1a" />
 
   <style>
+    /* =========================
+       GOKU COLOR SYSTEM
+       ========================= */
     :root{
-      --bg:#070a0f;
-      --panel:rgba(255,255,255,.04);
-      --panel2:rgba(255,255,255,.06);
-      --line:rgba(255,255,255,.10);
-      --text:#eaf0ff;
-      --muted:#a8b3d1;
+      --bg:#06080d;
+      --panel:rgba(255,255,255,.05);
+      --line:rgba(255,255,255,.12);
+      --text:#eef2ff;
+      --muted:#b6c2e6;
 
-      --g:#7cff6b;
-      --p:#8b5cff;
+      /* Goku colors */
+      --orange:#F57C00;
+      --blue:#1976D2;
+      --aura:#FFB300;
 
       --radius:22px;
-      --shadow: 0 22px 70px rgba(0,0,0,.55);
-      --shadow2: 0 14px 50px rgba(0,0,0,.45);
-      --max: 1120px;
+      --shadow:0 22px 70px rgba(0,0,0,.55);
     }
 
-    *{ box-sizing:border-box }
-    html{ scroll-behavior:smooth }
+    *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       color:var(--text);
       background:
-        radial-gradient(900px 520px at 10% -10%, rgba(124,255,107,.22), transparent 60%),
-        radial-gradient(820px 520px at 90% 0%, rgba(139,92,255,.22), transparent 60%),
-        radial-gradient(900px 700px at 50% 115%, rgba(124,255,107,.10), transparent 60%),
-        linear-gradient(180deg, #05060a 0%, #070a0f 35%, #070a0f 100%);
-      min-height:100vh;
+        radial-gradient(900px 520px at 10% -10%, rgba(245,124,0,.25), transparent 60%),
+        radial-gradient(820px 520px at 90% 0%, rgba(25,118,210,.25), transparent 60%),
+        linear-gradient(180deg,#05070c,#06080d);
     }
 
-    a{ color:inherit; text-decoration:none }
-    .wrap{ max-width:var(--max); margin:0 auto; padding:26px 18px 64px }
-    .row{ display:flex; align-items:center; justify-content:space-between; gap:16px }
-    .grid{ display:grid; gap:16px }
-    .muted{ color:var(--muted) }
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:1120px;margin:auto;padding:24px}
 
-    .pill{
-      display:inline-flex; align-items:center; gap:10px;
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.20);
-      padding:10px 12px;
-      border-radius:999px;
-      font-size:12px;
-      color:var(--muted);
-      user-select:none;
-    }
-    .dot{
-      width:10px; height:10px; border-radius:999px;
-      background: linear-gradient(135deg, rgba(124,255,107,.9), rgba(139,92,255,.9));
-      box-shadow: 0 0 18px rgba(124,255,107,.35);
-    }
-
-    /* Nav */
+    /* NAV */
     .nav{
-      position:sticky; top:0;
-      z-index:50;
-      backdrop-filter: blur(14px);
-      background: linear-gradient(180deg, rgba(7,10,15,.85), rgba(7,10,15,.55));
-      border-bottom: 1px solid rgba(255,255,255,.08);
+      position:sticky;top:0;z-index:20;
+      backdrop-filter:blur(12px);
+      background:rgba(6,8,13,.85);
+      border-bottom:1px solid var(--line);
     }
-    .navInner{ max-width:var(--max); margin:0 auto; padding:12px 18px }
-    .brand{ display:flex; align-items:center; gap:12px; min-width:0; }
+    .navInner{display:flex;justify-content:space-between;align-items:center;padding:14px 24px}
+    .brand{display:flex;align-items:center;gap:12px}
     .logo{
-      width:40px; height:40px; border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: linear-gradient(135deg, rgba(124,255,107,.18), rgba(139,92,255,.18));
-      display:grid; place-items:center;
-      font-weight:900; letter-spacing:.5px;
+      width:42px;height:42px;border-radius:14px;
+      background:linear-gradient(135deg,var(--orange),var(--blue));
+      display:grid;place-items:center;
+      font-weight:900;color:#000;
     }
-    .brandText{ display:flex; flex-direction:column; min-width:0 }
-    .brandText strong{ font-size:14px; letter-spacing:.3px }
-    .brandText span{
-      font-size:12px; color:var(--muted);
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-      max-width: 62vw;
-    }
-    .links{ display:flex; gap:12px; flex-wrap:wrap; justify-content:flex-end }
-    .link{
-      padding:10px 12px;
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.03);
-      font-size:13px;
-      font-weight:800;
-      transition: transform .15s ease, border-color .15s ease, background .15s ease;
-    }
-    .link:hover{ transform: translateY(-1px); border-color: rgba(124,255,107,.35); background: rgba(255,255,255,.05) }
-
-    /* Buttons */
-    .btnRow{ display:flex; gap:12px; flex-wrap:wrap; margin-top:14px }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:12px 14px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      font-size:14px;
-      font-weight:900;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-    }
-    .btn:hover{ transform: translateY(-1px); border-color: rgba(124,255,107,.35); background: rgba(255,255,255,.06) }
-    .btn:active{ transform: translateY(0px) }
-    .btnPrimary{
-      border-color: rgba(124,255,107,.35);
-      background: linear-gradient(135deg, rgba(124,255,107,.22), rgba(139,92,255,.20));
+    .links a{
+      margin-left:12px;
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      font-weight:700;
     }
 
-    /* Cards */
-    .card{
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
-      border-radius: var(--radius);
-      box-shadow: var(--shadow2);
-      overflow:hidden;
-    }
-    .pad{ padding:18px }
-    .title{ margin:0 0 10px; font-size: 18px; letter-spacing:.2px; }
-    .h1{
-      margin:10px 0 10px;
-      font-size: clamp(30px, 5.5vw, 52px);
-      line-height: 1.02;
-      letter-spacing: -.6px;
-    }
-    .lead{
-      margin:0;
-      color:var(--muted);
-      font-size: 15px;
-      line-height: 1.6;
-      max-width: 68ch;
-    }
-
+    /* HERO */
     .hero{
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:16px;
-      align-items:stretch;
-      margin-top:18px;
+      grid-template-columns:1.2fr .8fr;
+      gap:18px;
+      margin-top:22px;
+    }
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:20px;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;
+      background:rgba(0,0,0,.3);
+      border:1px solid var(--line);
+      font-size:12px;color:var(--muted);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background:linear-gradient(135deg,var(--orange),var(--aura));
+      box-shadow:0 0 22px rgba(245,124,0,.6);
+    }
+    h1{
+      font-size:clamp(32px,5vw,54px);
+      margin:14px 0;
+      line-height:1.05;
+    }
+    .lead{color:var(--muted);max-width:65ch}
+
+    .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
+    .btn{
+      padding:12px 16px;
+      border-radius:16px;
+      font-weight:900;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+    }
+    .btnPrimary{
+      background:linear-gradient(135deg,var(--orange),var(--blue));
+      color:#0b0f1a;
+      border-color:rgba(245,124,0,.6);
     }
 
-    .glowLine{
-      height:1px;
-      background: linear-gradient(90deg, transparent, rgba(124,255,107,.55), rgba(139,92,255,.55), transparent);
-      opacity:.7;
-    }
-
-    .stats{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-      margin-top:14px;
-    }
-    .stat{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
-      background: rgba(0,0,0,.18);
-      padding:12px;
-    }
-    .stat b{ display:block; font-size:14px }
-    .stat span{ display:block; color:var(--muted); font-size:12px; margin-top:4px }
-
-    /* Services */
+    /* SERVICES */
+    .services{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
     .svc{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-      margin-top:10px;
+      background:rgba(0,0,0,.25);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
     }
-    .svcItem{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
-      background: rgba(0,0,0,.16);
-      padding:12px;
-      position:relative;
-      overflow:hidden;
-    }
-    .svcItem:before{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(400px 120px at 10% 0%, rgba(124,255,107,.18), transparent 60%),
-                  radial-gradient(400px 120px at 90% 0%, rgba(139,92,255,.18), transparent 60%);
-      opacity:.85;
-      pointer-events:none;
-    }
-    .svcItem > *{ position:relative }
-    .svcItem strong{ display:block; font-size:14px }
-    .svcItem span{ display:block; font-size:12px; color:var(--muted); margin-top:6px }
+    .svc strong{display:block}
+    .svc span{font-size:12px;color:var(--muted)}
 
-    /* Videos */
+    /* VIDEOS */
     .videos{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap:12px;
-      margin-top:10px;
+      grid-template-columns:repeat(3,1fr);
+      gap:14px;
+      margin-top:18px;
     }
     .video{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
+      aspect-ratio:16/9;
+      border-radius:18px;
       overflow:hidden;
-      background: rgba(0,0,0,.25);
-      aspect-ratio: 16/9;
+      border:1px solid var(--line);
+      background:#000;
     }
-    iframe{ width:100%; height:100%; border:0 }
+    iframe{width:100%;height:100%;border:0}
 
-    /* Gallery placeholders */
+    /* GALLERY */
     .gallery{
       display:grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns:repeat(3,1fr);
       gap:12px;
-      margin-top:10px;
+      margin-top:16px;
     }
     .shot{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 18px;
-      overflow:hidden;
-      background: rgba(0,0,0,.20);
-      aspect-ratio: 1/1;
-      display:grid;
-      place-items:center;
-      text-align:center;
-      padding:14px;
-      color: rgba(234,240,255,.65);
-      font-weight:900;
-      line-height:1.2;
-    }
-    .shot small{ display:block; margin-top:8px; font-weight:700; color: var(--muted) }
-
-    /* Contact */
-    form{ display:grid; gap:10px; margin-top:10px }
-    input, textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius: 16px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
-      color: var(--text);
-      outline:none;
-      font-size:14px;
-    }
-    textarea{ min-height: 120px; resize: vertical }
-    .hint{
-      font-size:12px;
-      color:var(--muted);
-      border-left: 3px solid rgba(124,255,107,.55);
-      padding-left:10px;
-      margin-top:8px;
+      aspect-ratio:1/1;
+      border-radius:18px;
+      background:rgba(0,0,0,.3);
+      border:1px solid var(--line);
+      display:grid;place-items:center;
+      font-weight:800;color:var(--muted);
+      text-align:center;padding:12px;
     }
 
-    footer{
-      margin-top:26px;
-      text-align:center;
-      color:var(--muted);
-      font-size:12px;
+    /* CONTACT */
+    form{display:grid;gap:10px;margin-top:12px}
+    input,textarea{
+      padding:12px;border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.35);
+      color:var(--text);
     }
 
-    @media (max-width: 980px){
-      .hero{ grid-template-columns: 1fr }
-      .videos{ grid-template-columns: 1fr }
-      .gallery{ grid-template-columns: 1fr 1fr }
-      .svc{ grid-template-columns: 1fr }
-      .stats{ grid-template-columns: 1fr 1fr }
-      .links{ justify-content:flex-start }
+    footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
+
+    @media(max-width:900px){
+      .hero{grid-template-columns:1fr}
+      .videos{grid-template-columns:1fr}
+      .gallery{grid-template-columns:1fr 1fr}
+      .services{grid-template-columns:1fr}
     }
-    @media (max-width: 520px){
-      .gallery{ grid-template-columns: 1fr }
-      .stats{ grid-template-columns: 1fr }
-      .brandText span{ max-width: 78vw }
+    @media(max-width:500px){
+      .gallery{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
   <div class="nav">
-    <div class="navInner row">
+    <div class="navInner">
       <div class="brand">
         <div class="logo">BPA</div>
-        <div class="brandText">
-          <strong>Budget Print Alchemy</strong>
-          <span>@BudgetPrintAlchemy • 3D printing • fails, fixes, speed tests</span>
-        </div>
+        <strong>Budget Print Alchemy</strong>
       </div>
-
       <div class="links">
-        <a class="link" href="#videos">Videos</a>
-        <a class="link" href="#services">Services</a>
-        <a class="link" href="#gallery">Gallery</a>
-        <a class="link" href="#contact">Contact</a>
+        <a href="#videos">Videos</a>
+        <a href="#contact">Contact</a>
       </div>
     </div>
   </div>
@@ -307,177 +197,67 @@
   <main class="wrap">
     <section class="hero">
       <div class="card">
-        <div class="pad">
-          <div class="pill"><span class="dot"></span> Built for creators • Built for customers</div>
-          <h1 class="h1">I push my 3D printer until it screams<br/>so you don’t have to.</h1>
-          <p class="lead">
-            Fails, fixes, speed tests, and dumb ideas that sometimes work.
-            Want something printed? Need your settings dialed in? Let’s make it happen.
-          </p>
-
-          <div class="btnRow">
-            <a class="btn btnPrimary" href="https://www.youtube.com/@BudgetPrintAlchemy" target="_blank" rel="noreferrer">▶ Watch on YouTube</a>
-            <a class="btn" href="#contact">🧾 Request a Quote</a>
-            <a class="btn" href="#videos">🔥 Featured Videos</a>
-          </div>
-
-          <div class="stats">
-            <div class="stat">
-              <b>Speed-focused testing</b>
-              <span>Real-world print pushes + profiles</span>
-            </div>
-            <div class="stat">
-              <b>Fails & fixes</b>
-              <span>Lessons learned the hard way</span>
-            </div>
-            <div class="stat">
-              <b>Custom prints</b>
-              <span>Quote-based • small to large</span>
-            </div>
-            <div class="stat">
-              <b>Printer help</b>
-              <span>Troubleshooting & tuning</span>
-            </div>
-          </div>
-        </div>
-        <div class="glowLine"></div>
-        <div class="pad muted" style="font-size:12px">
-          This site is built to scale—custom domain, gallery, services page, even a shop later if you want it.
-        </div>
-      </div>
-
-      <aside class="card">
-        <div class="pad">
-          <h2 class="title" style="margin-top:0;" id="services">What I do</h2>
-          <p class="muted" style="margin:0">
-            One link that does it all: videos, credibility, and a clean way for people to hire you.
-          </p>
-
-          <div class="svc" style="margin-top:14px">
-            <div class="svcItem">
-              <strong>Custom 3D prints</strong>
-              <span>PLA / PETG / TPU (depends on the job)</span>
-            </div>
-            <div class="svcItem">
-              <strong>Slicer & profile help</strong>
-              <span>Dial-in settings without the rage</span>
-            </div>
-            <div class="svcItem">
-              <strong>Printer troubleshooting</strong>
-              <span>From “why is it doing that” to “ohhh… supports.”</span>
-            </div>
-            <div class="svcItem">
-              <strong>Small-batch parts</strong>
-              <span>Repeat runs for makers & DIY builds</span>
-            </div>
-          </div>
-
-          <div class="hint">
-            Want this to feel even more “official”? Grab a domain later like <b>budgetprintalchemy.com</b>.
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <section id="videos" class="card" style="margin-top:16px">
-      <div class="pad">
-        <h2 class="title">Featured Videos</h2>
-        <p class="muted" style="margin:0 0 10px">
-          A quick taste: 2 Shorts + a full unboxing. (Perfect “hook + proof” combo.)
+        <div class="pill"><span class="dot"></span> Push it past the limit</div>
+        <h1>I push my 3D printer until it screams<br>so you don’t have to.</h1>
+        <p class="lead">
+          Fails, fixes, speed tests, and dumb ideas that sometimes work.
+          Need a print? Need help? This is where it happens.
         </p>
 
-        <div class="videos">
-          <div class="video">
-            <iframe
-              src="https://www.youtube.com/embed/MyxBh3nwMuo"
-              title="Budget Print Alchemy Shorts"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-          <div class="video">
-            <iframe
-              src="https://www.youtube.com/embed/1kgHg9cRNi0"
-              title="Budget Print Alchemy Shorts"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-          <div class="video">
-            <iframe
-              src="https://www.youtube.com/embed/xQkcKYej1Qg"
-              title="Budget Print Alchemy Unboxing"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
+        <div class="btns">
+          <a class="btn btnPrimary" href="https://www.youtube.com/@BudgetPrintAlchemy" target="_blank">▶ Watch on YouTube</a>
+          <a class="btn" href="#contact">🧾 Request a Quote</a>
         </div>
 
-        <div class="hint">
-          Want these to be his “best 3”? Swap the IDs anytime. No rebuild headaches.
+        <div class="services">
+          <div class="svc"><strong>Custom Prints</strong><span>PLA / PETG / TPU</span></div>
+          <div class="svc"><strong>Printer Tuning</strong><span>Slicer & speed dialing</span></div>
+          <div class="svc"><strong>Fails & Fixes</strong><span>Real-world troubleshooting</span></div>
+          <div class="svc"><strong>Small Batch</strong><span>Repeat part runs</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Featured Videos</h3>
+        <div id="videos" class="videos">
+          <div class="video">
+            <iframe src="https://www.youtube.com/embed/MyxBh3nwMuo" allowfullscreen></iframe>
+          </div>
+          <div class="video">
+            <iframe src="https://www.youtube.com/embed/1kgHg9cRNi0" allowfullscreen></iframe>
+          </div>
+          <div class="video">
+            <iframe src="https://www.youtube.com/embed/xQkcKYej1Qg" allowfullscreen></iframe>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="gallery" class="card" style="margin-top:16px">
-      <div class="pad">
-        <h2 class="title">Gallery</h2>
-        <p class="muted" style="margin:0 0 10px">
-          Drop real print pics later—this section is already laid out for it.
-        </p>
-
-        <div class="gallery">
-          <div class="shot">K1 Max madness<br/><small>Add a print photo</small></div>
-          <div class="shot">Supports: too many?<br/><small>Add a print photo</small></div>
-          <div class="shot">Speed test results<br/><small>Add a print photo</small></div>
-          <div class="shot">Benchies & chaos<br/><small>Add a print photo</small></div>
-          <div class="shot">Fails & fixes<br/><small>Add a print photo</small></div>
-          <div class="shot">“What is it?” prints<br/><small>Add a print photo</small></div>
-        </div>
-
-        <div class="hint">
-          If you want, I’ll wire in your screenshots as real images so it looks finished tonight.
-        </div>
+    <section class="card" style="margin-top:18px">
+      <h3>Gallery</h3>
+      <div class="gallery">
+        <div class="shot">Speed Tests</div>
+        <div class="shot">Print Fails</div>
+        <div class="shot">Dialed Profiles</div>
+        <div class="shot">Benchies</div>
+        <div class="shot">Weird Stuff</div>
+        <div class="shot">Custom Jobs</div>
       </div>
     </section>
 
-    <section class="grid" style="grid-template-columns: 1fr 1fr; margin-top:16px">
-      <section class="card">
-        <div class="pad">
-          <h2 class="title">About</h2>
-          <p class="lead" style="font-size:14px">
-            Budget Print Alchemy is where I test hard, break stuff, fix it, and share what actually works.
-            No fluff. No fake guru talk. Just real printing—so you can get better results faster.
-          </p>
-          <div class="hint">
-            Want a “Danny voice” rewrite? Give me 3 facts about him and I’ll make it sound like him.
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" class="card">
-        <div class="pad">
-          <h2 class="title">Request a Quote</h2>
-          <p class="muted" style="margin:0 0 10px">
-            Custom print or printer help—either way, this gets you a response without the DM chaos.
-          </p>
-
-          <!-- Netlify Forms: works automatically on Netlify -->
-          <form name="quote" method="POST" data-netlify="true">
-            <input type="hidden" name="form-name" value="quote" />
-            <input name="name" placeholder="Your name" required />
-            <input name="email" type="email" placeholder="Your email" required />
-            <input name="topic" placeholder="What do you need printed or fixed?" required />
-            <textarea name="details" placeholder="Details: size, material, deadline, printer model, etc."></textarea>
-            <button class="btn btnPrimary" type="submit">Send Request</button>
-          </form>
-
-          <div class="hint">
-            Optional: add a file upload later (STL) + auto-quote workflow.
-          </div>
-        </div>
-      </section>
+    <section id="contact" class="card" style="margin-top:18px">
+      <h3>Request a Quote</h3>
+      <form name="quote" method="POST" data-netlify="true">
+        <input type="hidden" name="form-name" value="quote">
+        <input name="name" placeholder="Your name" required>
+        <input name="email" type="email" placeholder="Your email" required>
+        <textarea name="details" placeholder="What do you need printed or fixed?"></textarea>
+        <button class="btn btnPrimary" type="submit">Send Request</button>
+      </form>
     </section>
 
     <footer>
-      © <span id="y"></span> Budget Print Alchemy • Built to convert views into customers
+      © <span id="y"></span> Budget Print Alchemy • Super Saiyan Mode
     </footer>
   </main>
 
