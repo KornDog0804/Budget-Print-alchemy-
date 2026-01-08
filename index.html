@@ -448,6 +448,18 @@
   object-position: center !important;
   transform: scale(1.05); /* slight punch */
 }
+    /* ===== FIX FOOTER GRAY HAZE ===== */
+
+footer {
+  background: linear-gradient(
+    180deg,
+    rgba(10,15,24,0.0),
+    rgba(10,15,24,0.85) 40%,
+    rgba(10,15,24,1) 100%
+  );
+  margin-bottom: -120px; /* cancels the body padding visually */
+  padding-bottom: 140px; /* keeps text safe above the button */
+}
   </style>
 </head>
 
