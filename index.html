@@ -2,283 +2,585 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Budget Print Alchemy</title>
+  <meta name="description" content="Budget Print Alchemy — custom 3D prints, proof-first builds, fast turnaround." />
 
   <style>
     :root{
-      --bg:#0b0f16;
-      --panel:#121a27;
-      --text:#e9eef7;
-      --muted:#9aa4b2;
-      --line:rgba(255,255,255,.08);
-      --orange:#f59d2a;
-      --blue:#4aa3ff;
-      --radius:18px;
-      --shadow:0 20px 45px rgba(0,0,0,.45);
+      --bg:#0a0f18;
+      --panel:rgba(255,255,255,.05);
+      --panel2:rgba(255,255,255,.035);
+      --line:rgba(255,255,255,.10);
+      --text:#ecf2ff;
+      --muted:rgba(236,242,255,.72);
+      --muted2:rgba(236,242,255,.55);
+      --orange1:#f59d2a;
+      --orange2:#ffd08a;
+      --blue1:#4aa3ff;
+      --blue2:#9bd0ff;
+      --radius:22px;
+      --shadow:0 24px 70px rgba(0,0,0,.55);
+      --shadow2:0 16px 40px rgba(0,0,0,.45);
     }
 
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
-      background:radial-gradient(1200px 700px at 50% -200px, #22345d 0%, var(--bg) 55%);
+      background:
+        radial-gradient(1200px 650px at 50% -220px, #223d78 0%, rgba(34,61,120,.35) 25%, transparent 60%),
+        radial-gradient(900px 500px at 15% 10%, rgba(245,157,42,.18), transparent 55%),
+        radial-gradient(900px 500px at 85% 25%, rgba(74,163,255,.16), transparent 55%),
+        linear-gradient(180deg, #060a11, var(--bg) 55%, #070b12);
+      overflow-x:hidden;
     }
 
     a{color:inherit;text-decoration:none}
-    .wrap{max-width:1100px;margin:0 auto;padding:22px}
+    img{max-width:100%;display:block}
 
-    /* Header */
-    .top{
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:22px 16px 120px; /* bottom padding so the floating button never kills the footer */
+    }
+
+    /* TOP HERO */
+    .hero{
+      position:relative;
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(800px 300px at 30% 0%, rgba(245,157,42,.28), transparent 65%),
+        radial-gradient(700px 320px at 85% 20%, rgba(74,163,255,.22), transparent 60%);
+      pointer-events:none;
+      opacity:.85;
+    }
+    .hero-inner{
+      position:relative;
+      padding:22px;
+      display:grid;
+      gap:18px;
+    }
+    .topbar{
       display:flex;
-      gap:16px;
       align-items:center;
-      margin:6px 0 20px;
+      justify-content:center;
+      gap:16px;
+      text-align:center;
+      flex-wrap:wrap;
     }
     .logo{
-      width:86px;height:86px;border-radius:18px;overflow:hidden;
+      width:92px;height:92px;
+      border-radius:20px;
+      overflow:hidden;
       background:#9edb47;
-      box-shadow:0 14px 30px rgba(0,0,0,.35);
+      box-shadow:var(--shadow2);
+      border:1px solid rgba(0,0,0,.25);
       flex:0 0 auto;
-      display:grid;place-items:center;
     }
-    .logo img{width:100%;height:100%;object-fit:cover}
-    .brand h1{margin:0;font-size:2rem;line-height:1.05}
-    .brand p{margin:6px 0 0;color:var(--muted)}
+    .brand{
+      display:grid;
+      gap:6px;
+      justify-items:center;
+    }
+    .brand h1{
+      margin:0;
+      font-size:2.15rem;
+      line-height:1.05;
+      letter-spacing:-.02em;
+    }
+    .brand .tag{
+      margin:0;
+      color:var(--muted);
+      font-weight:650;
+      letter-spacing:.02em;
+    }
 
-    /* Cards */
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:18px;
-      box-shadow:var(--shadow);
-      margin:16px 0;
-      backdrop-filter: blur(6px);
+    .headline{
+      display:grid;
+      gap:10px;
+      justify-items:center;
+      text-align:center;
+      padding:6px 10px 2px;
     }
-    .cardhead{
-      display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+    .headline h2{
+      margin:0;
+      font-size:2.35rem;
+      line-height:1.02;
+      letter-spacing:-.03em;
+    }
+    .headline h2 .pop{
+      background:linear-gradient(135deg, var(--orange1), var(--orange2));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .headline p{
+      margin:0;
+      max-width:760px;
+      color:var(--muted);
+      font-size:1.05rem;
+      line-height:1.55;
+    }
+
+    .cta-row{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      padding:10px 10px 16px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:14px 18px;
+      border-radius:999px;
+      font-weight:850;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 14px 28px rgba(0,0,0,.38);
+      transition:transform .16s ease, filter .16s ease;
+      user-select:none;
+    }
+    .btn:hover{filter:brightness(1.03)}
+    .btn:active{transform:scale(.985)}
+    .btn.orange{background:linear-gradient(135deg, var(--orange1), var(--orange2)); color:#121212}
+    .btn.blue{background:linear-gradient(135deg, var(--blue1), var(--blue2)); color:#0b1222}
+    .btn.ghost{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03))}
+
+    /* SECTIONS / CARDS */
+    .section{
+      margin-top:18px;
+    }
+    .card{
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow2);
+      padding:18px;
+      backdrop-filter: blur(8px);
+    }
+    .card-head{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      gap:10px;
       margin-bottom:12px;
     }
-    .card h2{margin:0;font-size:1.35rem}
-
-    /* Buttons */
-    .btnrow{display:flex;flex-wrap:wrap;gap:12px}
-    .btn{
-      display:inline-flex;align-items:center;justify-content:center;gap:10px;
-      padding:14px 18px;border-radius:999px;font-weight:800;
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:0 14px 26px rgba(0,0,0,.35);
-      transition:.18s transform, .18s filter;
-      user-select:none;
-      cursor:pointer;
+    .card-head h3{
+      margin:0;
+      font-size:1.35rem;
+      letter-spacing:-.01em;
     }
-    .btn:active{transform:scale(.98)}
-    .btn.orange{background:linear-gradient(135deg, var(--orange), #ffd08a);color:#111}
-    .btn.blue{background:linear-gradient(135deg, var(--blue), #9bd0ff);color:#0c1320}
-    .btn.dark{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));}
+    .sub{
+      margin:0;
+      text-align:center;
+      color:var(--muted2);
+      font-size:0.98rem;
+      line-height:1.45;
+      margin-top:-4px;
+      margin-bottom:12px;
+    }
 
-    /* Horizontal scrollers */
+    /* GRID for services */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12, 1fr);
+      gap:12px;
+    }
+    .mini{
+      grid-column:span 12;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius:18px;
+      padding:14px;
+      text-align:center;
+    }
+    .mini .t{
+      font-weight:900;
+      margin:0 0 6px;
+      letter-spacing:-.01em;
+    }
+    .mini .d{
+      margin:0;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    @media (min-width: 800px){
+      .mini{grid-column:span 4}
+      .brand h1{font-size:2.3rem}
+      .headline h2{font-size:2.8rem}
+    }
+
+    /* SCROLLERS */
     .scroller{
-      display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;
+      display:flex;
+      gap:14px;
+      overflow-x:auto;
+      padding:6px 2px 10px;
       scroll-snap-type:x mandatory;
       -webkit-overflow-scrolling:touch;
+      justify-content:flex-start;
     }
     .scroller::-webkit-scrollbar{height:10px}
-    .scroller::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:999px}
+    .scroller::-webkit-scrollbar-thumb{background:rgba(255,255,255,.14);border-radius:999px}
+    .scroller::-webkit-scrollbar-track{background:rgba(255,255,255,.05);border-radius:999px}
 
-    /* Photo items */
+    /* Photos */
     .photo{
       flex:0 0 auto;
-      width:200px;height:260px;
-      border-radius:16px;
+      width:210px;
+      height:290px;
+      border-radius:18px;
       overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
-      background:#0f1624;
+      border:1px solid rgba(255,255,255,.10);
+      background:#0d1422;
       scroll-snap-align:start;
       cursor:pointer;
+      box-shadow:0 16px 34px rgba(0,0,0,.45);
+      position:relative;
     }
-    .photo img{width:100%;height:100%;object-fit:cover;display:block}
+    .photo img{width:100%;height:100%;object-fit:cover}
+    .photo::after{
+      content:"Tap to zoom";
+      position:absolute;
+      left:10px; bottom:10px;
+      font-size:.78rem;
+      font-weight:800;
+      color:rgba(255,255,255,.85);
+      background:rgba(0,0,0,.28);
+      border:1px solid rgba(255,255,255,.10);
+      padding:6px 10px;
+      border-radius:999px;
+      backdrop-filter: blur(6px);
+    }
 
-    /* Video items */
+    /* Videos */
     .video{
       flex:0 0 auto;
-      width:320px;height:180px;
-      border-radius:16px;
+      width:340px;
+      height:190px;
+      border-radius:18px;
       overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.10);
       background:#000;
       scroll-snap-align:start;
+      box-shadow:0 16px 34px rgba(0,0,0,.45);
     }
     .video iframe{width:100%;height:100%;border:0}
 
-    /* Quote form */
-    form{display:grid;gap:12px}
+    @media (max-width: 420px){
+      .video{width:300px;height:170px}
+    }
+
+    /* QUOTE FORM */
+    form{display:grid;gap:12px;max-width:820px;margin:0 auto}
+    .row2{
+      display:grid;
+      gap:12px;
+      grid-template-columns:1fr;
+    }
+    @media (min-width: 800px){
+      .row2{grid-template-columns:1fr 1fr}
+    }
     input, textarea{
       width:100%;
       padding:14px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
       background:rgba(0,0,0,.18);
       color:var(--text);
       font-size:1rem;
       outline:none;
     }
-    textarea{min-height:120px;resize:vertical}
-
-    /* Footer */
-    footer{
-      margin-top:26px;
-      padding:18px 2px 6px;
-      border-top:1px solid var(--line);
-      display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
-      color:var(--muted);
+    textarea{min-height:140px;resize:vertical}
+    .form-actions{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      padding-top:4px;
     }
-    footer strong{color:var(--text)}
 
-    /* Lightbox */
+    /* FOOTER */
+    footer{
+      margin-top:18px;
+      padding:18px 8px 10px;
+      text-align:center;
+      color:var(--muted2);
+      border-top:1px solid rgba(255,255,255,.10);
+    }
+    footer .strong{color:var(--text);font-weight:900}
+    footer .tiny{font-size:.92rem;line-height:1.5}
+
+    /* LIGHTBOX */
     .lightbox{
-      position:fixed;inset:0;
-      background:rgba(0,0,0,.82);
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.86);
       display:none;
-      align-items:center;justify-content:center;
-      padding:18px;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
       z-index:9999;
     }
     .lightbox.open{display:flex}
     .lb-inner{
-      width:min(100%, 960px);
-      height:min(85vh, 760px);
-      position:relative;
-      border-radius:18px;
+      width:min(980px, 100%);
+      height:min(82vh, 780px);
+      border-radius:22px;
       overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.14);
       background:#000;
+      position:relative;
+      box-shadow:0 26px 90px rgba(0,0,0,.65);
     }
     .lb-inner img{
-      width:100%;height:100%;
+      width:100%; height:100%;
       object-fit:contain;
-      display:block;
       background:#000;
     }
     .lb-close{
-      position:absolute;top:10px;right:10px;
-      width:44px;height:44px;border-radius:999px;
-      display:grid;place-items:center;
+      position:absolute;
+      top:10px; right:10px;
+      width:46px; height:46px;
+      border-radius:999px;
+      display:grid; place-items:center;
       background:rgba(255,255,255,.12);
       border:1px solid rgba(255,255,255,.18);
-      color:#fff;font-weight:900;
+      color:#fff;
+      font-weight:1000;
       cursor:pointer;
+      user-select:none;
+    }
+    .lb-hint{
+      position:absolute;
+      left:12px; bottom:12px;
+      color:rgba(255,255,255,.85);
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.14);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:850;
+      font-size:.85rem;
+      backdrop-filter: blur(6px);
     }
 
-    /* ONE floating Goku text button */
+    /* ONE FLOATING GOKU TEXT BUTTON (and it won't block footer) */
     .float{
-      position:fixed;right:16px;bottom:16px;z-index:100;
+      position:fixed;
+      right:14px;
+      bottom:calc(14px + env(safe-area-inset-bottom));
+      z-index:200;
     }
+    .float.hidden{display:none}
     .float a{
-      display:inline-flex;align-items:center;gap:12px;
-      padding:12px 14px;border-radius:999px;
-      background:linear-gradient(135deg, var(--orange), #ffd08a);
-      color:#111;font-weight:900;
-      box-shadow:0 16px 34px rgba(0,0,0,.45);
-      border:1px solid rgba(255,255,255,.10);
+      display:inline-flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:999px;
+      background:linear-gradient(135deg, var(--orange1), var(--orange2));
+      color:#141414;
+      font-weight:1000;
+      box-shadow:0 18px 44px rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.12);
+      user-select:none;
     }
     .goku{
-      width:40px;height:40px;border-radius:999px;
+      width:42px; height:42px;
+      border-radius:999px;
       overflow:hidden;
-      border:2px solid rgba(0,0,0,.25);
-      box-shadow:0 10px 18px rgba(0,0,0,.35);
+      border:2px solid rgba(0,0,0,.22);
       background:#000;
+      box-shadow:0 12px 24px rgba(0,0,0,.4);
+      flex:0 0 auto;
     }
-    .goku img{width:100%;height:100%;object-fit:cover;display:block}
+    .goku img{width:100%;height:100%;object-fit:cover}
   </style>
 </head>
 
 <body>
   <div class="wrap">
 
-    <!-- HEADER -->
-    <div class="top">
-      <div class="logo">
-        <img src="assets/photos/IMG_20260107_225428.jpg" alt="Budget Print Alchemy logo">
-      </div>
-      <div class="brand">
-        <h1>Budget Print<br/>Alchemy</h1>
-        <p>Custom prints • Real proof • Fast turnaround</p>
-      </div>
-    </div>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
 
-    <!-- PROOF GALLERY -->
-    <section class="card">
-      <div class="cardhead">
-        <h2>Proof Gallery</h2>
+        <div class="topbar">
+          <div class="logo">
+            <!-- logo image you uploaded -->
+            <img src="assets/photos/IMG_20260107_225428.jpg" alt="Budget Print Alchemy logo">
+          </div>
+
+          <div class="brand">
+            <h1>Budget Print<br/>Alchemy</h1>
+            <p class="tag">Custom prints • Real proof • Fast turnaround</p>
+          </div>
+        </div>
+
+        <div class="headline">
+          <h2>Turn ideas into prints — <span class="pop">fast.</span></h2>
+          <p>
+            Danny found 3D printing as a hobby… then it turned into a full-blown passion.
+            Now he’s building custom prints, testing ideas, and sharing the process so anyone can bring their vision to life.
+            <strong>Proof-first</strong>, clean work, and straight answers.
+          </p>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn orange" href="#quote">⚡ Request a Quote</a>
+          <a class="btn blue" href="sms:+12702303709">📲 Text Danny</a>
+          <a class="btn ghost" href="mailto:Dannykennemore@icloud.com">✉️ Email</a>
+        </div>
       </div>
+    </section>
+
+    <!-- WHAT HE DOES -->
+    <section class="section card">
+      <div class="card-head"><h3>What Danny Can Make</h3></div>
+      <p class="sub">Quick examples — the exact list can evolve as he levels up.</p>
+
+      <div class="grid">
+        <div class="mini">
+          <p class="t">Custom Props & Parts</p>
+          <p class="d">From broken pieces to brand-new builds. Bring a reference photo and a goal.</p>
+        </div>
+        <div class="mini">
+          <p class="t">Cosplay & Display Prints</p>
+          <p class="d">Clean, durable prints built to be shown off — not hidden in a drawer.</p>
+        </div>
+        <div class="mini">
+          <p class="t">Proof-First Workflow</p>
+          <p class="d">You’ll see progress shots and updates so you’re never guessing.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROOF GALLERY (ALL THE PHOTOS YOU UPLOADED) -->
+    <section class="section card" id="proof">
+      <div class="card-head"><h3>Proof Gallery</h3></div>
+      <p class="sub">Swipe through builds — tap any photo to zoom.</p>
 
       <div class="scroller" id="photoScroller">
-        <div class="photo" data-src="assets/photos/IMG_20260107_225439.jpg"><img src="assets/photos/IMG_20260107_225439.jpg"></div>
-        <div class="photo" data-src="assets/photos/IMG_20260107_225442.jpg"><img src="assets/photos/IMG_20260107_225442.jpg"></div>
-        <div class="photo" data-src="assets/photos/IMG_20260107_225444.jpg"><img src="assets/photos/IMG_20260107_225444.jpg"></div>
+        <!-- Use the files you showed in your GitHub folder -->
+        <div class="photo" data-src="assets/photos/IMG_20260107_225439.jpg"><img src="assets/photos/IMG_20260107_225439.jpg" alt="Proof photo 1"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225442.jpg"><img src="assets/photos/IMG_20260107_225442.jpg" alt="Proof photo 2"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225444.jpg"><img src="assets/photos/IMG_20260107_225444.jpg" alt="Proof photo 3"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225447.jpg"><img src="assets/photos/IMG_20260107_225447.jpg" alt="Proof photo 4"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225450.jpg"><img src="assets/photos/IMG_20260107_225450.jpg" alt="Proof photo 5"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225453.jpg"><img src="assets/photos/IMG_20260107_225453.jpg" alt="Proof photo 6"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225456.jpg"><img src="assets/photos/IMG_20260107_225456.jpg" alt="Proof photo 7"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225458.jpg"><img src="assets/photos/IMG_20260107_225458.jpg" alt="Proof photo 8"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225501.jpg"><img src="assets/photos/IMG_20260107_225501.jpg" alt="Proof photo 9"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225504.jpg"><img src="assets/photos/IMG_20260107_225504.jpg" alt="Proof photo 10"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225506.jpg"><img src="assets/photos/IMG_20260107_225506.jpg" alt="Proof photo 11"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225509.jpg"><img src="assets/photos/IMG_20260107_225509.jpg" alt="Proof photo 12"></div>
+      </div>
+
+      <div class="cta-row" style="padding:4px 0 0;">
+        <a class="btn ghost" href="#quote">Get a quote on something like this</a>
       </div>
     </section>
 
     <!-- YOUTUBE (SCROLLABLE) -->
-    <section class="card">
-      <div class="cardhead">
-        <h2>YouTube</h2>
-      </div>
+    <section class="section card" id="youtube">
+      <div class="card-head"><h3>YouTube</h3></div>
+      <p class="sub">Swipe through videos — no random Rickroll trash, only Danny’s.</p>
 
       <div class="scroller">
         <div class="video">
-          <iframe src="https://www.youtube.com/embed/xQkcKYej1Qg" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/xQkcKYej1Qg" title="Budget Print Alchemy video 1" allowfullscreen></iframe>
         </div>
-
         <div class="video">
-          <iframe src="https://www.youtube.com/embed/cKtgDqhss_A" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/cKtgDqhss_A" title="Budget Print Alchemy video 2" allowfullscreen></iframe>
         </div>
-
         <div class="video">
-          <iframe src="https://www.youtube.com/embed/bA4wuKiyV2A" allowfullscreen></iframe>
+          <iframe src="https://www.youtube.com/embed/bA4wuKiyV2A" title="Budget Print Alchemy video 3" allowfullscreen></iframe>
         </div>
       </div>
 
-      <div class="btnrow" style="margin-top:14px">
-        <a class="btn blue" href="https://youtube.com/@budgetprintalchemy?si=FzB2oFeSDMkH3RhY" target="_blank">▶ Visit Channel</a>
+      <div class="cta-row" style="padding:8px 0 0;">
+        <a class="btn blue" href="https://youtube.com/@budgetprintalchemy?si=FzB2oFeSDMkH3RhY" target="_blank" rel="noreferrer">▶ Visit Channel</a>
+        <a class="btn ghost" href="#proof">📸 See Proof Gallery</a>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS (simple + not creepy) -->
+    <section class="section card">
+      <div class="card-head"><h3>How It Works</h3></div>
+      <p class="sub">Simple. Fast. No weird sales pressure.</p>
+
+      <div class="grid">
+        <div class="mini">
+          <p class="t">1) Send the idea</p>
+          <p class="d">Text a photo, a link, or a sketch — and what it’s for.</p>
+        </div>
+        <div class="mini">
+          <p class="t">2) Get a clear quote</p>
+          <p class="d">Danny tells you what’s possible, timeline, and cost.</p>
+        </div>
+        <div class="mini">
+          <p class="t">3) Proof & progress</p>
+          <p class="d">You’ll see updates as it’s built so it’s never a mystery box.</p>
+        </div>
       </div>
     </section>
 
     <!-- REQUEST A QUOTE (BOTTOM) -->
-    <section class="card">
-      <div class="cardhead">
-        <h2>Request a Quote</h2>
-      </div>
+    <section class="section card" id="quote">
+      <div class="card-head"><h3>Request a Quote</h3></div>
+      <p class="sub">Send details here, or just text him — fastest response is text.</p>
 
       <form action="mailto:Dannykennemore@icloud.com" method="post" enctype="text/plain">
-        <input name="name" placeholder="Your name" />
-        <input name="phone" placeholder="Phone (optional)" />
-        <textarea name="details" placeholder="What do you want printed? Size, material, idea…"></textarea>
-        <div class="btnrow">
-          <button class="btn orange" type="submit">Send Request</button>
-          <a class="btn dark" href="sms:+12702303709">📲 Text Danny</a>
+        <div class="row2">
+          <input name="name" placeholder="Your name" />
+          <input name="phone" placeholder="Phone (optional)" />
+        </div>
+        <textarea name="details" placeholder="What do you want printed? Size, material, purpose, deadline…"></textarea>
+
+        <div class="form-actions">
+          <button class="btn orange" type="submit">Send Email Request</button>
+          <a class="btn blue" href="sms:+12702303709">📲 Text Danny</a>
         </div>
       </form>
     </section>
 
     <!-- FOOTER -->
-    <footer>
-      <div>
-        📲 <strong>Text:</strong> 270-230-3709<br/>
-        ✉️ <strong>Email:</strong> Dannykennemore@icloud.com
+    <footer id="siteFooter">
+      <div class="tiny">
+        <div><span class="strong">Text:</span> 270-230-3709 &nbsp;•&nbsp; <span class="strong">Email:</span> Dannykennemore@icloud.com</div>
+        <div style="margin-top:8px;">
+          Proof-first • Clean work • Quick turnaround
+        </div>
+        <div style="margin-top:8px;">
+          Want something custom? Send a reference photo and what it’s for — Danny will tell you what’s possible.
+        </div>
       </div>
-      <div>Proof-first • Clean work • Quick turnaround</div>
     </footer>
 
   </div>
 
-  <!-- ONE floating Goku Text button -->
-  <div class="float">
-    <a href="sms:+12702303709">
-      <span class="goku"><img src="assets/photos/Screenshot_20260107-233534~2.png" alt="Goku"></span>
+  <!-- ONE floating Goku Text button (only one, ever) -->
+  <div class="float" id="floatCta">
+    <a href="sms:+12702303709" aria-label="Text Danny">
+      <span class="goku">
+        <!-- your goku image in github -->
+        <img src="assets/photos/Screenshot_20260107-233534~2.png" alt="Goku">
+      </span>
       Text Danny
     </a>
   </div>
@@ -287,26 +589,49 @@
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <div class="lb-inner">
       <div class="lb-close" id="lbClose">✕</div>
-      <img id="lbImg" src="" alt="Expanded proof">
+      <img id="lbImg" src="" alt="Expanded proof photo">
+      <div class="lb-hint">Tap outside to close</div>
     </div>
   </div>
 
   <script>
-    // Lightbox
+    // LIGHTBOX
     const photos = Array.from(document.querySelectorAll('.photo'));
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
     const lbClose = document.getElementById('lbClose');
 
-    let idx = 0;
-    photos.forEach((p, i) => p.addEventListener('click', ()=>{
-      idx = i;
-      lbImg.src = p.dataset.src;
-      lightbox.classList.add('open');
-    }));
+    photos.forEach(p => {
+      p.addEventListener('click', () => {
+        lbImg.src = p.dataset.src;
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+      });
+    });
 
-    lbClose.addEventListener('click', ()=> lightbox.classList.remove('open'));
-    lightbox.addEventListener('click',(e)=>{ if(e.target===lightbox) lightbox.classList.remove('open') });
+    const closeLb = () => {
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      lbImg.src = "";
+    };
+
+    lbClose.addEventListener('click', closeLb);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLb(); });
+
+    // FLOATING BUTTON: hide when footer is visible so it never blocks anything
+    const floatCta = document.getElementById('floatCta');
+    const footer = document.getElementById('siteFooter');
+
+    if ('IntersectionObserver' in window && footer && floatCta) {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) floatCta.classList.add('hidden');
+          else floatCta.classList.remove('hidden');
+        });
+      }, { root: null, threshold: 0.08 });
+
+      obs.observe(footer);
+    }
   </script>
 </body>
 </html>
