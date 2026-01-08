@@ -410,6 +410,21 @@
       flex:0 0 auto;
     }
     .goku img{width:100%;height:100%;object-fit:cover}
+    /* ===== LOGO HARD FIX (NO HTML CHANGES) ===== */
+.logo {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.logo img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+  padding: 8px !important; /* visually centers logo inside green */
+  transform: scale(1.15); /* compensates for dead space in image */
+}
   </style>
 </head>
 
