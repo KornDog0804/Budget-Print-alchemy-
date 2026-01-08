@@ -38,7 +38,7 @@
     }
 
     a{color:inherit; text-decoration:none}
-    .wrap{max-width:1120px; margin:0 auto; padding:24px 16px 90px}
+    .wrap{max-width:1120px; margin:0 auto; padding:24px 16px 120px}
 
     /* Header */
     .top{
@@ -116,22 +116,6 @@
       box-shadow: 0 12px 40px rgba(0,0,0,.28);
     }
 
-    /* Quote */
-    .formGrid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-    @media (max-width: 640px){ .formGrid{grid-template-columns:1fr} }
-
-    label{display:block; font-size:12px; color:var(--muted); margin:8px 0 6px}
-    input, textarea, select{
-      width:100%;
-      background:rgba(255,255,255,.06);
-      border:1px solid var(--stroke);
-      color:var(--ink);
-      padding:12px 12px;
-      border-radius:12px;
-      outline:none;
-    }
-    textarea{min-height:110px; resize:vertical}
-
     /* Sections */
     .section{margin-top:16px}
     .sectionHead{
@@ -190,21 +174,46 @@
     }
     .yt iframe{width:100%; height:190px; border:0; display:block; background:#000;}
 
-    /* TikTok embed holder */
-    .embedWrap{
+    /* TikTok section (no embed) */
+    .tiktokGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){ .tiktokGrid{grid-template-columns:1fr} }
+
+    .tiktokPreview{
       border:1px solid var(--stroke);
-      background:rgba(255,255,255,.04);
-      border-radius:var(--radius);
+      border-radius:16px;
       overflow:hidden;
+      background:rgba(255,255,255,.03);
       box-shadow: 0 14px 44px rgba(0,0,0,.35);
+      min-height:190px;
+      display:grid;
+      place-items:center;
     }
-    .embedWrap iframe{
+    .tiktokPreview img{
+      width:100%; height:100%; object-fit:cover; display:block;
+    }
+    .tiktokPreview .placeholder{
+      padding:18px; color:rgba(234,242,255,.75); text-align:center;
+    }
+
+    /* Quote form */
+    .formGrid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    @media (max-width: 640px){ .formGrid{grid-template-columns:1fr} }
+    label{display:block; font-size:12px; color:var(--muted); margin:8px 0 6px}
+    input, textarea, select{
       width:100%;
-      height:680px;
-      border:0;
-      display:block;
-      background:#000;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--stroke);
+      color:var(--ink);
+      padding:12px 12px;
+      border-radius:12px;
+      outline:none;
     }
+    textarea{min-height:110px; resize:vertical}
 
     /* Lightbox */
     .lightbox{
@@ -265,6 +274,34 @@
       border:2px solid rgba(255,255,255,.35);
       background:rgba(255,255,255,.1);
     }
+
+    /* Footer */
+    footer{
+      margin-top:18px;
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:16px;
+      color:rgba(234,242,255,.70);
+      font-size:12px;
+    }
+    .footerGrid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:12px;
+    }
+    @media (max-width: 900px){ .footerGrid{grid-template-columns:1fr} }
+
+    .footerBadges{
+      display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;
+    }
+    .badge{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.05);
+      color:rgba(234,242,255,.82);
+      font-weight:700;
+      letter-spacing:.2px;
+    }
   </style>
 </head>
 
@@ -283,60 +320,26 @@
       </div>
     </div>
 
-    <!-- Hero + Quote -->
+    <!-- Hero -->
     <section class="hero">
       <div class="heroInner">
         <div>
           <h2>Turn ideas into prints — <span>fast</span>.</h2>
-          <p>
-            Send a screenshot or link and get a quick quote.
-          </p>
+          <p>Text a screenshot or link to get a quick quote.</p>
 
           <div class="ctaRow">
             <a class="btn btnBlue" href="sms:+12702303709?&body=Hey%20Danny!%20I%20need%20a%20quote%20for%20a%203D%20print.%20Here%E2%80%99s%20what%20I%20need%3A%20">📲 Text Danny</a>
-            <a class="btn btnPrimary" href="#quote">⚡ Request a Quote</a>
-            <a class="btn btnGhost" href="#gallery">📸 Proof</a>
+            <a class="btn btnPrimary" href="#gallery">📸 See Proof</a>
+            <a class="btn btnGhost" href="#quote">⚡ Request a Quote</a>
           </div>
         </div>
 
-        <div class="card" id="quote">
-          <h3 style="margin:0 0 10px;">Request a Quote</h3>
-
-          <form id="quoteForm">
-            <div class="formGrid">
-              <div>
-                <label>Your name</label>
-                <input name="name" placeholder="Your name" required />
-              </div>
-              <div>
-                <label>Your phone (optional)</label>
-                <input name="phone" placeholder="270-xxx-xxxx" />
-              </div>
-            </div>
-
-            <label>What do you want printed?</label>
-            <textarea name="details" placeholder="What is it + rough size + any notes..." required></textarea>
-
-            <div class="formGrid">
-              <div>
-                <label>Preferred contact</label>
-                <select name="pref">
-                  <option>Text</option>
-                  <option>Email</option>
-                  <option>Call</option>
-                </select>
-              </div>
-              <div>
-                <label>Budget (optional)</label>
-                <input name="budget" placeholder="$50 / $100 / $200..." />
-              </div>
-            </div>
-
-            <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
-              <button class="btn btnPrimary" type="submit">Send</button>
-              <a class="btn btnGhost" href="mailto:Dannykennemore@icloud.com">Email instead</a>
-            </div>
-          </form>
+        <div class="card">
+          <h3 style="margin:0 0 10px;">How to start</h3>
+          <p style="margin:0; color:rgba(234,242,255,.75); line-height:1.55;">
+            Send a screenshot/link + the rough size you want.
+            Danny will tell you what’s possible and what it’ll take.
+          </p>
         </div>
       </div>
     </section>
@@ -386,17 +389,125 @@
       </div>
     </section>
 
-    <!-- TikTok -->
+    <!-- TikTok (clean links only) -->
     <section class="section" id="tiktok">
       <div class="sectionHead">
         <h3>TikTok</h3>
         <a href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J" target="_blank" rel="noreferrer">Open Profile →</a>
       </div>
 
-      <div class="embedWrap">
-        <iframe src="https://www.tiktok.com/embed/@dannykennemore" allowfullscreen></iframe>
+      <div class="card">
+        <div class="tiktokGrid">
+          <div>
+            <p style="margin:0 0 10px; color:rgba(234,242,255,.75); line-height:1.55;">
+              Want the latest clips? Tap below — it opens straight in TikTok (no weird embed issues).
+            </p>
+
+            <div class="ctaRow" style="margin-top:10px;">
+              <a class="btn btnPrimary" target="_blank" rel="noreferrer"
+                 href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J">🎵 Open TikTok</a>
+
+              <a class="btn btnGhost" target="_blank" rel="noreferrer"
+                 href="sms:+12702303709?&body=Hey%20Danny!%20I%20saw%20your%20TikTok%20and%20want%20a%20quote%20for%20a%203D%20print.%20Here%E2%80%99s%20what%20I%20need%3A%20">📲 Text for quote</a>
+            </div>
+          </div>
+
+          <!-- Optional preview image (upload any TikTok screenshot into assets/photos and set it here) -->
+          <div class="tiktokPreview">
+            <div class="placeholder">
+              Add a TikTok screenshot here (optional).<br/>
+              <span style="opacity:.8">Upload it to <b>assets/photos/</b> and update the filename below.</span>
+            </div>
+            <!-- Example if you add a screenshot:
+            <img src="assets/photos/tiktok-preview.jpg" alt="TikTok preview" />
+            -->
+          </div>
+        </div>
       </div>
     </section>
+
+    <!-- Quote (moved to bottom) -->
+    <section class="section" id="quote">
+      <div class="sectionHead">
+        <h3>Request a Quote</h3>
+      </div>
+
+      <div class="card">
+        <form id="quoteForm">
+          <div class="formGrid">
+            <div>
+              <label>Your name</label>
+              <input name="name" placeholder="Your name" required />
+            </div>
+            <div>
+              <label>Your phone (optional)</label>
+              <input name="phone" placeholder="270-xxx-xxxx" />
+            </div>
+          </div>
+
+          <label>What do you want printed?</label>
+          <textarea name="details" placeholder="What is it + rough size + any notes..." required></textarea>
+
+          <div class="formGrid">
+            <div>
+              <label>Preferred contact</label>
+              <select name="pref">
+                <option>Text</option>
+                <option>Email</option>
+                <option>Call</option>
+              </select>
+            </div>
+            <div>
+              <label>Budget (optional)</label>
+              <input name="budget" placeholder="$50 / $100 / $200..." />
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+            <button class="btn btnPrimary" type="submit">Send</button>
+            <a class="btn btnBlue" href="sms:+12702303709?&body=Hey%20Danny!%20I%20need%20a%20quote%20for%20a%203D%20print.%20Here%E2%80%99s%20what%20I%20need%3A%20">📲 Text Danny</a>
+            <a class="btn btnGhost" href="mailto:Dannykennemore@icloud.com">Email instead</a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer (salesy, not creepy) -->
+    <footer>
+      <div class="footerGrid">
+        <div>
+          <div style="font-weight:900; color:rgba(234,242,255,.88); margin-bottom:6px;">
+            Fast proof. Clear pricing. No runaround.
+          </div>
+          <div style="line-height:1.6;">
+            Best way to start: text a screenshot/link + the rough size you want.
+            If you’re ordering multiple pieces, ask about bundle pricing.
+          </div>
+
+          <div class="footerBadges">
+            <div class="badge">✅ Quick quotes</div>
+            <div class="badge">✅ Proof-first workflow</div>
+            <div class="badge">✅ Bundle pricing available</div>
+            <div class="badge">✅ Ship or local pickup</div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:14px; background:rgba(255,255,255,.03);">
+          <div style="font-weight:900; margin-bottom:8px;">Contact</div>
+          <div style="line-height:1.8; color:rgba(234,242,255,.78);">
+            📲 Text: <a href="sms:+12702303709">270-230-3709</a><br/>
+            📞 Call: <a href="tel:+12702303709">270-230-3709</a><br/>
+            ✉️ Email: <a href="mailto:Dannykennemore@icloud.com">Dannykennemore@icloud.com</a><br/>
+            ▶️ YouTube: <a target="_blank" rel="noreferrer" href="https://youtube.com/@budgetprintalchemy?si=FzB2oFeSDMkH3RhY">@budgetprintalchemy</a><br/>
+            🎵 TikTok: <a target="_blank" rel="noreferrer" href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J">@dannykennemore</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px; opacity:.65;">
+        © <span id="yr"></span> Budget Print Alchemy
+      </div>
+    </footer>
   </div>
 
   <!-- ONE sticky CTA using your Goku image -->
@@ -415,6 +526,8 @@
   </div>
 
   <script>
+    document.getElementById("yr").textContent = new Date().getFullYear();
+
     // Quote form -> opens email to Danny with content prefilled
     document.getElementById("quoteForm").addEventListener("submit", function(e){
       e.preventDefault();
