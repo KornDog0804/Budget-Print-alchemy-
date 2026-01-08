@@ -2,231 +2,406 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Budget Print Alchemy</title>
 
   <style>
-    :root {
+    :root{
       --bg:#0b0f16;
-      --card:#131a26;
+      --panel:#121a27;
+      --panel2:#0f1624;
       --text:#e9eef7;
       --muted:#9aa4b2;
-      --orange:#f57c00;
-      --blue:#1976d2;
-      --radius:16px;
+      --line:rgba(255,255,255,.08);
+      --orange:#f59d2a;
+      --blue:#4aa3ff;
+      --radius:18px;
+      --shadow:0 20px 45px rgba(0,0,0,.45);
     }
 
-    * { box-sizing:border-box; }
-    body {
+    *{box-sizing:border-box}
+    body{
       margin:0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:radial-gradient(circle at top, #16213a, var(--bg));
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
+      background:radial-gradient(1200px 700px at 50% -200px, #22345d 0%, var(--bg) 55%);
     }
 
-    a { color:inherit; text-decoration:none; }
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:22px}
 
-    .container {
-      max-width:1100px;
-      margin:auto;
-      padding:20px;
-    }
-
-    header {
+    /* Header */
+    .top{
       display:flex;
+      gap:16px;
       align-items:center;
-      gap:16px;
-      margin-bottom:30px;
+      margin:6px 0 20px;
     }
-
-    header img {
-      height:60px;
-      border-radius:12px;
+    .logo{
+      width:86px;height:86px;border-radius:18px;overflow:hidden;
+      background:#9edb47;
+      box-shadow:0 14px 30px rgba(0,0,0,.35);
+      flex:0 0 auto;
+      display:grid;place-items:center;
     }
+    .logo img{width:100%;height:100%;object-fit:cover}
+    .brand h1{margin:0;font-size:2rem;line-height:1.05}
+    .brand p{margin:6px 0 0;color:var(--muted)}
 
-    header h1 {
-      margin:0;
-      font-size:1.8rem;
-    }
-
-    header p {
-      margin:4px 0 0;
-      color:var(--muted);
-    }
-
-    .card {
-      background:linear-gradient(180deg, #182033, var(--card));
+    /* Cards */
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--line);
       border-radius:var(--radius);
-      padding:20px;
-      margin-bottom:24px;
-      box-shadow:0 20px 40px rgba(0,0,0,.4);
+      padding:18px;
+      box-shadow:var(--shadow);
+      margin:16px 0;
+      backdrop-filter: blur(6px);
     }
-
-    h2 {
-      margin-top:0;
-      font-size:1.4rem;
+    .cardhead{
+      display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+      margin-bottom:12px;
     }
-
-    /* Gallery */
-    .gallery {
-      display:flex;
-      gap:14px;
-      overflow-x:auto;
-      padding-bottom:6px;
-      scroll-snap-type:x mandatory;
-    }
-
-    .gallery img {
-      height:220px;
-      border-radius:14px;
-      scroll-snap-align:start;
-      cursor:pointer;
-      transition:.2s;
-    }
-
-    .gallery img:hover {
-      transform:scale(1.03);
-    }
-
-    /* Video row */
-    .videoRow {
-      display:flex;
-      gap:16px;
-      overflow-x:auto;
-    }
-
-    iframe {
-      border-radius:14px;
-      border:none;
-      min-width:320px;
-      height:180px;
-    }
+    .card h2{margin:0;font-size:1.35rem}
+    .hint{color:var(--muted);font-size:.95rem}
 
     /* Buttons */
-    .btnRow {
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-top:12px;
+    .btnrow{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:14px 18px;border-radius:999px;font-weight:700;
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 14px 26px rgba(0,0,0,.35);
+      transition:.18s transform, .18s filter;
+      user-select:none;
+    }
+    .btn:active{transform:scale(.98)}
+    .btn.orange{background:linear-gradient(135deg, var(--orange), #ffd08a);color:#111}
+    .btn.blue{background:linear-gradient(135deg, var(--blue), #9bd0ff);color:#0c1320}
+    .btn.dark{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));}
+
+    /* Horizontal scrollers */
+    .scroller{
+      display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling:touch;
+    }
+    .scroller::-webkit-scrollbar{height:10px}
+    .scroller::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:999px}
+
+    /* Photo items */
+    .photo{
+      flex:0 0 auto;
+      width:180px;height:240px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:var(--panel2);
+      scroll-snap-align:start;
+      cursor:pointer;
+      position:relative;
+    }
+    .photo img{width:100%;height:100%;object-fit:cover;display:block}
+    @media (min-width:720px){
+      .photo{width:220px;height:280px}
     }
 
-    .btn {
-      padding:14px 20px;
-      border-radius:999px;
-      font-weight:600;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      box-shadow:0 10px 20px rgba(0,0,0,.35);
+    /* Video items */
+    .video{
+      flex:0 0 auto;
+      width:320px;height:180px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:#000;
+      scroll-snap-align:start;
     }
+    .video iframe{width:100%;height:100%;border:0}
 
-    .primary {
-      background:linear-gradient(135deg, var(--orange), #ffb347);
-      color:#000;
-    }
-
-    .secondary {
-      background:linear-gradient(135deg, var(--blue), #64b5f6);
-      color:#000;
-    }
-
-    /* Quote */
-    form input, form textarea {
+    /* Quote form */
+    form{display:grid;gap:12px}
+    input, textarea{
       width:100%;
-      margin-top:10px;
-      padding:14px;
-      border-radius:12px;
-      border:none;
-      background:#0f1523;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
       color:var(--text);
       font-size:1rem;
+      outline:none;
     }
+    textarea{min-height:120px;resize:vertical}
+    .small{color:var(--muted);font-size:.92rem}
 
-    form textarea { resize:none; height:120px; }
-
-    footer {
-      margin-top:50px;
-      padding-top:20px;
-      border-top:1px solid rgba(255,255,255,.08);
-      display:flex;
-      justify-content:space-between;
-      flex-wrap:wrap;
-      gap:14px;
+    /* Footer */
+    footer{
+      margin-top:26px;
+      padding:18px 2px 6px;
+      border-top:1px solid var(--line);
+      display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
       color:var(--muted);
-      font-size:.95rem;
+    }
+    footer strong{color:var(--text)}
+
+    /* Lightbox */
+    .lightbox{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.82);
+      display:none;
+      align-items:center;justify-content:center;
+      padding:18px;
+      z-index:9999;
+    }
+    .lightbox.open{display:flex}
+    .lb-inner{
+      width:min(100%, 960px);
+      height:min(85vh, 760px);
+      position:relative;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background:#000;
+    }
+    .lb-inner img{
+      width:100%;height:100%;
+      object-fit:contain;
+      display:block;
+      background:#000;
+    }
+    .lb-close{
+      position:absolute;top:10px;right:10px;
+      width:44px;height:44px;border-radius:999px;
+      display:grid;place-items:center;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      color:#fff;font-weight:900;
+      cursor:pointer;
+    }
+    .lb-nav{
+      position:absolute;top:50%;transform:translateY(-50%);
+      width:46px;height:46px;border-radius:999px;
+      display:grid;place-items:center;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      color:#fff;font-weight:900;
+      cursor:pointer;
+      user-select:none;
+    }
+    .lb-prev{left:10px}
+    .lb-next{right:10px}
+
+    /* Single floating text button (ONE) */
+    .float{
+      position:fixed;right:16px;bottom:16px;z-index:100;
+    }
+    .float a{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:14px 16px;border-radius:999px;
+      background:linear-gradient(135deg, var(--orange), #ffd08a);
+      color:#111;font-weight:900;
+      box-shadow:0 16px 34px rgba(0,0,0,.45);
+      border:1px solid rgba(255,255,255,.10);
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
+  <div class="wrap">
 
     <!-- HEADER -->
-    <header>
-      <img src="assets/photos/IMG_20260107_225428.jpg" alt="Budget Print Alchemy Logo">
-      <div>
-        <h1>Budget Print Alchemy</h1>
+    <div class="top">
+      <div class="logo">
+        <!-- make sure this filename exists -->
+        <img src="assets/photos/IMG_20260107_225428.jpg" alt="Budget Print Alchemy logo">
+      </div>
+      <div class="brand">
+        <h1>Budget Print<br/>Alchemy</h1>
         <p>Custom prints • Real proof • Fast turnaround</p>
       </div>
-    </header>
+    </div>
 
-    <!-- GALLERY -->
+    <!-- PROOF GALLERY -->
     <section class="card">
-      <h2>Proof Gallery</h2>
-      <div class="gallery">
-        <img src="assets/photos/IMG_20260107_225439.jpg">
-        <img src="assets/photos/IMG_20260107_225442.jpg">
-        <img src="assets/photos/IMG_20260107_225444.jpg">
-        <img src="assets/photos/IMG_20260107_225447.jpg">
-        <img src="assets/photos/IMG_20260107_225450.jpg">
-        <img src="assets/photos/IMG_20260107_225453.jpg">
+      <div class="cardhead">
+        <h2>Proof Gallery</h2>
+        <div class="hint">Swipe → tap to zoom</div>
+      </div>
+
+      <div class="scroller" id="photoScroller">
+        <!-- Update these filenames to match what’s in /assets/photos/ -->
+        <div class="photo" data-src="assets/photos/IMG_20260107_225439.jpg"><img src="assets/photos/IMG_20260107_225439.jpg" alt="Proof 1"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225442.jpg"><img src="assets/photos/IMG_20260107_225442.jpg" alt="Proof 2"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225444.jpg"><img src="assets/photos/IMG_20260107_225444.jpg" alt="Proof 3"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225447.jpg"><img src="assets/photos/IMG_20260107_225447.jpg" alt="Proof 4"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225450.jpg"><img src="assets/photos/IMG_20260107_225450.jpg" alt="Proof 5"></div>
+        <div class="photo" data-src="assets/photos/IMG_20260107_225453.jpg"><img src="assets/photos/IMG_20260107_225453.jpg" alt="Proof 6"></div>
       </div>
     </section>
 
     <!-- TIKTOK -->
     <section class="card">
-      <h2>TikTok</h2>
-      <div class="btnRow">
-        <a class="btn primary" href="https://www.tiktok.com/t/ZThLne4A5/" target="_blank">🎵 Watch TikTok</a>
-        <a class="btn secondary" href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J" target="_blank">Profile</a>
+      <div class="cardhead">
+        <h2>TikTok</h2>
+      </div>
+      <div class="btnrow">
+        <a class="btn orange" href="https://www.tiktok.com/t/ZThLne4A5/" target="_blank" rel="noopener">🎵 Watch TikTok</a>
+        <a class="btn blue" href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J" target="_blank" rel="noopener">Profile</a>
       </div>
     </section>
 
-    <!-- YOUTUBE -->
+    <!-- YOUTUBE (SCROLLABLE + STABLE) -->
     <section class="card">
-      <h2>YouTube</h2>
-      <div class="videoRow">
-        <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=budgetprintalchemy"></iframe>
+      <div class="cardhead">
+        <h2>YouTube</h2>
+        <div class="hint">Swipe videos</div>
       </div>
-      <div class="btnRow">
-        <a class="btn secondary" href="https://youtube.com/@budgetprintalchemy" target="_blank">▶ Visit Channel</a>
+
+      <div class="scroller">
+        <!-- Replace THESE video IDs with the 2–3 Danny videos you want shown -->
+        <!-- Example: https://www.youtube.com/watch?v=VIDEO_ID  -->
+        <div class="video">
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="YouTube video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+
+        <div class="video">
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="YouTube video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+
+        <div class="video">
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="YouTube video"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <div class="btnrow" style="margin-top:14px">
+        <a class="btn blue" href="https://youtube.com/@budgetprintalchemy?si=FzB2oFeSDMkH3RhY" target="_blank" rel="noopener">▶ Visit Channel</a>
+      </div>
+
+      <div class="small" style="margin-top:10px">
+        Want me to swap those 3 embeds to Danny’s real 3 latest? Send me 3 YouTube links and I’ll drop the IDs in.
       </div>
     </section>
 
-    <!-- QUOTE -->
-    <section class="card">
-      <h2>Request a Quote</h2>
+    <!-- REQUEST A QUOTE (BOTTOM) -->
+    <section class="card" id="quote">
+      <div class="cardhead">
+        <h2>Request a Quote</h2>
+      </div>
+
       <form action="mailto:Dannykennemore@icloud.com" method="post" enctype="text/plain">
-        <input type="text" name="name" placeholder="Your name">
-        <input type="text" name="phone" placeholder="Phone (optional)">
+        <input name="name" placeholder="Your name" />
+        <input name="phone" placeholder="Phone (optional)" />
         <textarea name="details" placeholder="What do you want printed? Size, material, idea…"></textarea>
-        <div class="btnRow">
-          <button class="btn primary" type="submit">Send Request</button>
+        <div class="btnrow">
+          <button class="btn orange" type="submit">Send Request</button>
+          <a class="btn dark" href="sms:+12702303709">📲 Text Danny</a>
         </div>
       </form>
+
+      <div class="small" style="margin-top:10px">
+        Fastest start: text a screenshot/link + the rough size you want.
+      </div>
     </section>
 
     <!-- FOOTER -->
     <footer>
       <div>
-        📱 Text: <strong>270-230-3709</strong><br>
-        📧 Dannykennemore@icloud.com
+        📲 <strong>Text:</strong> 270-230-3709<br/>
+        ✉️ <strong>Email:</strong> Dannykennemore@icloud.com
       </div>
       <div>
-        Built for speed • Proof first • No pressure
+        Proof-first • Clean work • Quick turnaround
       </div>
     </footer>
 
   </div>
+
+  <!-- ONE floating text button -->
+  <div class="float">
+    <a href="sms:+12702303709">📲 Text Danny</a>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lb-inner">
+      <div class="lb-close" id="lbClose">✕</div>
+      <div class="lb-nav lb-prev" id="lbPrev">‹</div>
+      <div class="lb-nav lb-next" id="lbNext">›</div>
+      <img id="lbImg" src="" alt="Expanded proof">
+    </div>
+  </div>
+
+  <script>
+    // Lightbox for photos (tap to zoom)
+    const photos = Array.from(document.querySelectorAll('.photo'));
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbClose = document.getElementById('lbClose');
+    const lbPrev = document.getElementById('lbPrev');
+    const lbNext = document.getElementById('lbNext');
+
+    let idx = 0;
+
+    function openLB(i){
+      idx = i;
+      lbImg.src = photos[idx].dataset.src;
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden','false');
+    }
+    function closeLB(){
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden','true');
+      lbImg.src = '';
+    }
+    function prevLB(){
+      idx = (idx - 1 + photos.length) % photos.length;
+      lbImg.src = photos[idx].dataset.src;
+    }
+    function nextLB(){
+      idx = (idx + 1) % photos.length;
+      lbImg.src = photos[idx].dataset.src;
+    }
+
+    photos.forEach((p, i) => p.addEventListener('click', () => openLB(i)));
+    lbClose.addEventListener('click', closeLB);
+    lbPrev.addEventListener('click', prevLB);
+    lbNext.addEventListener('click', nextLB);
+
+    lightbox.addEventListener('click', (e) => {
+      if(e.target === lightbox) closeLB();
+    });
+
+    // swipe support (simple)
+    let startX = 0;
+    lbImg.addEventListener('touchstart', (e) => startX = e.touches[0].clientX, {passive:true});
+    lbImg.addEventListener('touchend', (e) => {
+      const endX = e.changedTouches[0].clientX;
+      const dx = endX - startX;
+      if(Math.abs(dx) > 50){
+        dx > 0 ? prevLB() : nextLB();
+      }
+    }, {passive:true});
+
+    // ESC to close (desktop)
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape' && lightbox.classList.contains('open')) closeLB();
+      if(e.key === 'ArrowLeft' && lightbox.classList.contains('open')) prevLB();
+      if(e.key === 'ArrowRight' && lightbox.classList.contains('open')) nextLB();
+    });
+  </script>
 </body>
 </html>
