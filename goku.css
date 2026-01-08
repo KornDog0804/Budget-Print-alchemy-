@@ -146,3 +146,70 @@
 
   background: transparent;
 }
+/* =========================================
+   LOGO FIX (CATCH-ALL) — CSS ONLY
+   Paste at VERY bottom of goku.css
+   ========================================= */
+
+:root { --logoSize: 96px; }
+
+/* Hit most common logo containers (yours is likely one of these) */
+header .logo,
+header .brand,
+header .brandmark,
+header .logo-wrap,
+header .logoWrap,
+header .site-logo,
+header .siteLogo,
+.hero .logo,
+.hero .brand,
+.brand .logo,
+.navbar .logo,
+.topbar .logo,
+[class*="logo"] {
+  width: var(--logoSize) !important;
+  height: var(--logoSize) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  border-radius: 22px !important;
+  background: #9edb47 !important;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35) !important;
+  border: 1px solid rgba(0,0,0,.25) !important;
+  padding: 0 !important;
+}
+
+/* Kill any “helpful” spacing around the logo image */
+header .logo img,
+header .brand img,
+header .brandmark img,
+header .logo-wrap img,
+header .logoWrap img,
+header .site-logo img,
+header .siteLogo img,
+.hero .logo img,
+.navbar .logo img,
+.topbar .logo img,
+[class*="logo"] img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  object-fit: cover !important;     /* THIS is the big change */
+  object-position: center !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  /* If your actual PNG has extra transparent padding, this punches in */
+  transform: scale(1.65) !important;
+  transform-origin: center !important;
+}
+
+/* If the logo is a LINK wrapping the image, force it too */
+header a:has(img) {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
