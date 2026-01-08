@@ -2,572 +2,231 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Budget Print Alchemy</title>
-  <meta name="description" content="Budget Print Alchemy — custom 3D printing. Text for fast quotes." />
 
   <style>
-    :root{
-      --bg0:#06070c;
-      --bg1:#0b1020;
-      --card:rgba(255,255,255,.06);
-      --stroke:rgba(255,255,255,.12);
-
-      --orange:#F57C00;
-      --blue:#1976D2;
-      --aura:#FFB300;
-
-      --ink:#EAF2FF;
-      --muted:rgba(234,242,255,.70);
-
-      --shadow: 0 18px 55px rgba(0,0,0,.45);
-      --radius: 18px;
+    :root {
+      --bg:#0b0f16;
+      --card:#131a26;
+      --text:#e9eef7;
+      --muted:#9aa4b2;
+      --orange:#f57c00;
+      --blue:#1976d2;
+      --radius:16px;
     }
 
-    *{box-sizing:border-box}
-    body{
+    * { box-sizing:border-box; }
+    body {
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--ink);
-      background:
-        radial-gradient(900px 500px at 10% 10%, rgba(25,118,210,.30), transparent 60%),
-        radial-gradient(900px 500px at 90% 20%, rgba(245,124,0,.22), transparent 60%),
-        radial-gradient(700px 500px at 50% 100%, rgba(255,179,0,.16), transparent 65%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-      min-height:100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:radial-gradient(circle at top, #16213a, var(--bg));
+      color:var(--text);
     }
 
-    a{color:inherit; text-decoration:none}
-    .wrap{max-width:1120px; margin:0 auto; padding:24px 16px 120px}
+    a { color:inherit; text-decoration:none; }
 
-    /* Header */
-    .top{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; padding:8px 2px 16px;
+    .container {
+      max-width:1100px;
+      margin:auto;
+      padding:20px;
     }
-    .brand{display:flex; align-items:center; gap:12px;}
-    .logo{
-      width:58px; height:58px; border-radius:16px;
-      border:1px solid var(--stroke);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      background:rgba(255,255,255,.04);
-      display:grid; place-items:center;
-    }
-    .logo img{width:100%; height:100%; object-fit:cover; display:block}
-    .brand h1{margin:0; font-size:18px; letter-spacing:.4px}
-    .brand p{margin:2px 0 0; color:var(--muted); font-size:12px}
 
-    /* Hero */
-    .hero{
-      border:1px solid var(--stroke);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .heroInner{
-      padding:22px 18px;
-      display:grid;
-      grid-template-columns: 1.15fr .85fr;
+    header {
+      display:flex;
+      align-items:center;
       gap:16px;
-      align-items:stretch;
-    }
-    @media (max-width: 900px){ .heroInner{grid-template-columns:1fr} }
-
-    .hero h2{
-      margin:0 0 10px;
-      font-size:34px; line-height:1.08;
-      letter-spacing:-.6px;
-    }
-    .hero h2 span{
-      background:linear-gradient(90deg, var(--orange), var(--aura), var(--blue));
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
-    .hero p{margin:0 0 14px; color:var(--muted); font-size:15px; line-height:1.5}
-
-    .ctaRow{display:flex; flex-wrap:wrap; gap:10px; margin-top:12px;}
-    .btn{
-      border:none; cursor:pointer;
-      padding:12px 14px;
-      border-radius:14px;
-      font-weight:900;
-      letter-spacing:.2px;
-      display:inline-flex; align-items:center; gap:10px;
-      transition:.15s transform ease, .15s filter ease;
-      box-shadow: 0 14px 40px rgba(0,0,0,.35);
-      user-select:none;
-    }
-    .btn:hover{transform:translateY(-1px); filter:brightness(1.05)}
-    .btnPrimary{color:#0b1020; background:linear-gradient(135deg, var(--aura), var(--orange));}
-    .btnBlue{color:white; background:linear-gradient(135deg, var(--blue), rgba(25,118,210,.65));}
-    .btnGhost{
-      color:var(--ink); background:rgba(255,255,255,.06);
-      border:1px solid var(--stroke); box-shadow:none;
+      margin-bottom:30px;
     }
 
-    .card{
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.04);
-      border-radius:var(--radius);
-      padding:16px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.28);
-    }
-
-    /* Sections */
-    .section{margin-top:16px}
-    .sectionHead{
-      display:flex; align-items:end; justify-content:space-between; gap:12px;
-      margin: 16px 0 10px;
-    }
-    .sectionHead h3{margin:0; font-size:18px}
-    .sectionHead a{font-size:12px; color:rgba(234,242,255,.75)}
-    .sectionHead a:hover{color:rgba(234,242,255,.95)}
-
-    /* Horizontal scrollers */
-    .scroller{
-      display:flex;
-      gap:12px;
-      overflow-x:auto;
-      padding: 10px 6px 14px;
-      scroll-snap-type:x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-    .scroller::-webkit-scrollbar{height:10px}
-    .scroller::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18); border-radius:999px;}
-
-    /* Gallery cards */
-    .shot{
-      flex:0 0 auto;
-      width:240px;
-      border-radius:16px;
-      overflow:hidden;
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.03);
-      box-shadow: 0 14px 44px rgba(0,0,0,.35);
-      scroll-snap-align:start;
-      cursor:pointer;
-      position:relative;
-    }
-    .shot img{width:100%; height:180px; object-fit:cover; display:block;}
-    .shot .cap{padding:10px 10px 12px; color:rgba(234,242,255,.72); font-size:12px;}
-    .shot::after{
-      content:"";
-      position:absolute; inset:0;
-      background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,.30));
-      pointer-events:none;
-      opacity:.65;
-    }
-
-    /* YouTube tiles */
-    .yt{
-      flex:0 0 auto;
-      width:320px;
-      border-radius:16px;
-      overflow:hidden;
-      border:1px solid var(--stroke);
-      background:rgba(255,255,255,.03);
-      box-shadow: 0 14px 44px rgba(0,0,0,.35);
-      scroll-snap-align:start;
-    }
-    .yt iframe{width:100%; height:190px; border:0; display:block; background:#000;}
-
-    /* TikTok section (no embed) */
-    .tiktokGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:12px;
-      align-items:stretch;
-    }
-    @media (max-width: 900px){ .tiktokGrid{grid-template-columns:1fr} }
-
-    .tiktokPreview{
-      border:1px solid var(--stroke);
-      border-radius:16px;
-      overflow:hidden;
-      background:rgba(255,255,255,.03);
-      box-shadow: 0 14px 44px rgba(0,0,0,.35);
-      min-height:190px;
-      display:grid;
-      place-items:center;
-    }
-    .tiktokPreview img{
-      width:100%; height:100%; object-fit:cover; display:block;
-    }
-    .tiktokPreview .placeholder{
-      padding:18px; color:rgba(234,242,255,.75); text-align:center;
-    }
-
-    /* Quote form */
-    .formGrid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-    @media (max-width: 640px){ .formGrid{grid-template-columns:1fr} }
-    label{display:block; font-size:12px; color:var(--muted); margin:8px 0 6px}
-    input, textarea, select{
-      width:100%;
-      background:rgba(255,255,255,.06);
-      border:1px solid var(--stroke);
-      color:var(--ink);
-      padding:12px 12px;
+    header img {
+      height:60px;
       border-radius:12px;
-      outline:none;
-    }
-    textarea{min-height:110px; resize:vertical}
-
-    /* Lightbox */
-    .lightbox{
-      position:fixed; inset:0;
-      background:rgba(0,0,0,.86);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:16px;
-      z-index:9999;
-    }
-    .lightbox.open{display:flex}
-    .lbInner{
-      width:min(1100px, 96vw);
-      height:min(80vh, 720px);
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(10,12,20,.65);
-      box-shadow: 0 20px 80px rgba(0,0,0,.6);
-      position:relative;
-    }
-    .lbInner img{
-      width:100%; height:100%; object-fit:contain; display:block;
-      background:rgba(0,0,0,.45);
-    }
-    .lbClose{
-      position:absolute; top:10px; right:10px;
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.16);
-      color:white;
-      border-radius:999px;
-      padding:10px 12px;
-      font-weight:1000;
-      cursor:pointer;
     }
 
-    /* ONE sticky CTA */
-    .stickyText{
-      position:fixed;
-      right:14px;
-      bottom:14px;
-      z-index:999;
+    header h1 {
+      margin:0;
+      font-size:1.8rem;
+    }
+
+    header p {
+      margin:4px 0 0;
+      color:var(--muted);
+    }
+
+    .card {
+      background:linear-gradient(180deg, #182033, var(--card));
+      border-radius:var(--radius);
+      padding:20px;
+      margin-bottom:24px;
+      box-shadow:0 20px 40px rgba(0,0,0,.4);
+    }
+
+    h2 {
+      margin-top:0;
+      font-size:1.4rem;
+    }
+
+    /* Gallery */
+    .gallery {
       display:flex;
+      gap:14px;
+      overflow-x:auto;
+      padding-bottom:6px;
+      scroll-snap-type:x mandatory;
+    }
+
+    .gallery img {
+      height:220px;
+      border-radius:14px;
+      scroll-snap-align:start;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .gallery img:hover {
+      transform:scale(1.03);
+    }
+
+    /* Video row */
+    .videoRow {
+      display:flex;
+      gap:16px;
+      overflow-x:auto;
+    }
+
+    iframe {
+      border-radius:14px;
+      border:none;
+      min-width:320px;
+      height:180px;
+    }
+
+    /* Buttons */
+    .btnRow {
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .btn {
+      padding:14px 20px;
+      border-radius:999px;
+      font-weight:600;
+      display:inline-flex;
       align-items:center;
-      gap:10px;
-      padding:12px 14px;
-      border-radius:999px;
-      background:linear-gradient(135deg, rgba(25,118,210,.95), rgba(245,124,0,.90));
-      color:#0b1020;
-      font-weight:1000;
-      box-shadow: 0 16px 60px rgba(0,0,0,.55);
-      border:1px solid rgba(255,255,255,.25);
-    }
-    .stickyText img{
-      width:34px; height:34px; object-fit:cover;
-      border-radius:999px;
-      border:2px solid rgba(255,255,255,.35);
-      background:rgba(255,255,255,.1);
+      gap:8px;
+      box-shadow:0 10px 20px rgba(0,0,0,.35);
     }
 
-    /* Footer */
-    footer{
-      margin-top:18px;
-      border-top:1px solid rgba(255,255,255,.10);
-      padding-top:16px;
-      color:rgba(234,242,255,.70);
-      font-size:12px;
+    .primary {
+      background:linear-gradient(135deg, var(--orange), #ffb347);
+      color:#000;
     }
-    .footerGrid{
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:12px;
-    }
-    @media (max-width: 900px){ .footerGrid{grid-template-columns:1fr} }
 
-    .footerBadges{
-      display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;
+    .secondary {
+      background:linear-gradient(135deg, var(--blue), #64b5f6);
+      color:#000;
     }
-    .badge{
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.05);
-      color:rgba(234,242,255,.82);
-      font-weight:700;
-      letter-spacing:.2px;
+
+    /* Quote */
+    form input, form textarea {
+      width:100%;
+      margin-top:10px;
+      padding:14px;
+      border-radius:12px;
+      border:none;
+      background:#0f1523;
+      color:var(--text);
+      font-size:1rem;
+    }
+
+    form textarea { resize:none; height:120px; }
+
+    footer {
+      margin-top:50px;
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.08);
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:14px;
+      color:var(--muted);
+      font-size:.95rem;
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <!-- Header -->
-    <div class="top">
-      <div class="brand">
-        <div class="logo">
-          <img src="assets/photos/IMG_20260107_225428.jpg" alt="Budget Print Alchemy logo">
-        </div>
-        <div>
-          <h1>Budget Print Alchemy</h1>
-          <p>Custom prints • Real progress • Fast quotes</p>
-        </div>
+  <div class="container">
+
+    <!-- HEADER -->
+    <header>
+      <img src="assets/photos/IMG_20260107_225428.jpg" alt="Budget Print Alchemy Logo">
+      <div>
+        <h1>Budget Print Alchemy</h1>
+        <p>Custom prints • Real proof • Fast turnaround</p>
       </div>
-    </div>
+    </header>
 
-    <!-- Hero -->
-    <section class="hero">
-      <div class="heroInner">
-        <div>
-          <h2>Turn ideas into prints — <span>fast</span>.</h2>
-          <p>Text a screenshot or link to get a quick quote.</p>
-
-          <div class="ctaRow">
-            <a class="btn btnBlue" href="sms:+12702303709?&body=Hey%20Danny!%20I%20need%20a%20quote%20for%20a%203D%20print.%20Here%E2%80%99s%20what%20I%20need%3A%20">📲 Text Danny</a>
-            <a class="btn btnPrimary" href="#gallery">📸 See Proof</a>
-            <a class="btn btnGhost" href="#quote">⚡ Request a Quote</a>
-          </div>
-        </div>
-
-        <div class="card">
-          <h3 style="margin:0 0 10px;">How to start</h3>
-          <p style="margin:0; color:rgba(234,242,255,.75); line-height:1.55;">
-            Send a screenshot/link + the rough size you want.
-            Danny will tell you what’s possible and what it’ll take.
-          </p>
-        </div>
+    <!-- GALLERY -->
+    <section class="card">
+      <h2>Proof Gallery</h2>
+      <div class="gallery">
+        <img src="assets/photos/IMG_20260107_225439.jpg">
+        <img src="assets/photos/IMG_20260107_225442.jpg">
+        <img src="assets/photos/IMG_20260107_225444.jpg">
+        <img src="assets/photos/IMG_20260107_225447.jpg">
+        <img src="assets/photos/IMG_20260107_225450.jpg">
+        <img src="assets/photos/IMG_20260107_225453.jpg">
       </div>
     </section>
 
-    <!-- Gallery -->
-    <section class="section" id="gallery">
-      <div class="sectionHead">
-        <h3>Proof Gallery</h3>
+    <!-- TIKTOK -->
+    <section class="card">
+      <h2>TikTok</h2>
+      <div class="btnRow">
+        <a class="btn primary" href="https://www.tiktok.com/t/ZThLne4A5/" target="_blank">🎵 Watch TikTok</a>
+        <a class="btn secondary" href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J" target="_blank">Profile</a>
       </div>
+    </section>
 
-      <div class="card" style="padding:10px 10px 2px;">
-        <div class="scroller">
-          <div class="shot" data-full="assets/photos/IMG_20260107_225431.png">
-            <img src="assets/photos/IMG_20260107_225431.png" alt="Logo / brand" />
-            <div class="cap">Logo / brand</div>
-          </div>
+    <!-- YOUTUBE -->
+    <section class="card">
+      <h2>YouTube</h2>
+      <div class="videoRow">
+        <iframe src="https://www.youtube.com/embed?listType=user_uploads&list=budgetprintalchemy"></iframe>
+      </div>
+      <div class="btnRow">
+        <a class="btn secondary" href="https://youtube.com/@budgetprintalchemy" target="_blank">▶ Visit Channel</a>
+      </div>
+    </section>
 
-          <div class="shot" data-full="assets/photos/IMG_20260107_225439.jpg"><img src="assets/photos/IMG_20260107_225439.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225442.jpg"><img src="assets/photos/IMG_20260107_225442.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225444.jpg"><img src="assets/photos/IMG_20260107_225444.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225447.jpg"><img src="assets/photos/IMG_20260107_225447.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225450.jpg"><img src="assets/photos/IMG_20260107_225450.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225453.jpg"><img src="assets/photos/IMG_20260107_225453.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225456.jpg"><img src="assets/photos/IMG_20260107_225456.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225458.jpg"><img src="assets/photos/IMG_20260107_225458.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225501.jpg"><img src="assets/photos/IMG_20260107_225501.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225504.jpg"><img src="assets/photos/IMG_20260107_225504.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225506.jpg"><img src="assets/photos/IMG_20260107_225506.jpg" alt="Progress" /><div class="cap">Progress</div></div>
-          <div class="shot" data-full="assets/photos/IMG_20260107_225509.jpg"><img src="assets/photos/IMG_20260107_225509.jpg" alt="Progress" /><div class="cap">Progress</div></div>
+    <!-- QUOTE -->
+    <section class="card">
+      <h2>Request a Quote</h2>
+      <form action="mailto:Dannykennemore@icloud.com" method="post" enctype="text/plain">
+        <input type="text" name="name" placeholder="Your name">
+        <input type="text" name="phone" placeholder="Phone (optional)">
+        <textarea name="details" placeholder="What do you want printed? Size, material, idea…"></textarea>
+        <div class="btnRow">
+          <button class="btn primary" type="submit">Send Request</button>
         </div>
-      </div>
+      </form>
     </section>
 
-    <!-- YouTube (scrollable row) -->
-    <section class="section" id="youtube">
-      <div class="sectionHead">
-        <h3>YouTube</h3>
-        <a href="https://youtube.com/@budgetprintalchemy?si=FzB2oFeSDMkH3RhY" target="_blank" rel="noreferrer">Open Channel →</a>
-      </div>
-
-      <div class="card" style="padding:10px 10px 2px;">
-        <div class="scroller">
-          <div class="yt"><iframe src="https://www.youtube.com/embed/MyxBh3nwMuo" allowfullscreen></iframe></div>
-          <div class="yt"><iframe src="https://www.youtube.com/embed/1kgHg9cRNi0" allowfullscreen></iframe></div>
-          <div class="yt"><iframe src="https://www.youtube.com/embed/xQkcKYej1Qg" allowfullscreen></iframe></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TikTok (clean links only) -->
-    <section class="section" id="tiktok">
-      <div class="sectionHead">
-        <h3>TikTok</h3>
-        <a href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J" target="_blank" rel="noreferrer">Open Profile →</a>
-      </div>
-
-      <div class="card">
-        <div class="tiktokGrid">
-          <div>
-            <p style="margin:0 0 10px; color:rgba(234,242,255,.75); line-height:1.55;">
-              Want the latest clips? Tap below — it opens straight in TikTok (no weird embed issues).
-            </p>
-
-            <div class="ctaRow" style="margin-top:10px;">
-              <a class="btn btnPrimary" target="_blank" rel="noreferrer"
-                 href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J">🎵 Open TikTok</a>
-
-              <a class="btn btnGhost" target="_blank" rel="noreferrer"
-                 href="sms:+12702303709?&body=Hey%20Danny!%20I%20saw%20your%20TikTok%20and%20want%20a%20quote%20for%20a%203D%20print.%20Here%E2%80%99s%20what%20I%20need%3A%20">📲 Text for quote</a>
-            </div>
-          </div>
-
-          <!-- Optional preview image (upload any TikTok screenshot into assets/photos and set it here) -->
-          <div class="tiktokPreview">
-            <div class="placeholder">
-              Add a TikTok screenshot here (optional).<br/>
-              <span style="opacity:.8">Upload it to <b>assets/photos/</b> and update the filename below.</span>
-            </div>
-            <!-- Example if you add a screenshot:
-            <img src="assets/photos/tiktok-preview.jpg" alt="TikTok preview" />
-            -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Quote (moved to bottom) -->
-    <section class="section" id="quote">
-      <div class="sectionHead">
-        <h3>Request a Quote</h3>
-      </div>
-
-      <div class="card">
-        <form id="quoteForm">
-          <div class="formGrid">
-            <div>
-              <label>Your name</label>
-              <input name="name" placeholder="Your name" required />
-            </div>
-            <div>
-              <label>Your phone (optional)</label>
-              <input name="phone" placeholder="270-xxx-xxxx" />
-            </div>
-          </div>
-
-          <label>What do you want printed?</label>
-          <textarea name="details" placeholder="What is it + rough size + any notes..." required></textarea>
-
-          <div class="formGrid">
-            <div>
-              <label>Preferred contact</label>
-              <select name="pref">
-                <option>Text</option>
-                <option>Email</option>
-                <option>Call</option>
-              </select>
-            </div>
-            <div>
-              <label>Budget (optional)</label>
-              <input name="budget" placeholder="$50 / $100 / $200..." />
-            </div>
-          </div>
-
-          <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
-            <button class="btn btnPrimary" type="submit">Send</button>
-            <a class="btn btnBlue" href="sms:+12702303709?&body=Hey%20Danny!%20I%20need%20a%20quote%20for%20a%203D%20print.%20Here%E2%80%99s%20what%20I%20need%3A%20">📲 Text Danny</a>
-            <a class="btn btnGhost" href="mailto:Dannykennemore@icloud.com">Email instead</a>
-          </div>
-        </form>
-      </div>
-    </section>
-
-    <!-- Footer (salesy, not creepy) -->
+    <!-- FOOTER -->
     <footer>
-      <div class="footerGrid">
-        <div>
-          <div style="font-weight:900; color:rgba(234,242,255,.88); margin-bottom:6px;">
-            Fast proof. Clear pricing. No runaround.
-          </div>
-          <div style="line-height:1.6;">
-            Best way to start: text a screenshot/link + the rough size you want.
-            If you’re ordering multiple pieces, ask about bundle pricing.
-          </div>
-
-          <div class="footerBadges">
-            <div class="badge">✅ Quick quotes</div>
-            <div class="badge">✅ Proof-first workflow</div>
-            <div class="badge">✅ Bundle pricing available</div>
-            <div class="badge">✅ Ship or local pickup</div>
-          </div>
-        </div>
-
-        <div class="card" style="padding:14px; background:rgba(255,255,255,.03);">
-          <div style="font-weight:900; margin-bottom:8px;">Contact</div>
-          <div style="line-height:1.8; color:rgba(234,242,255,.78);">
-            📲 Text: <a href="sms:+12702303709">270-230-3709</a><br/>
-            📞 Call: <a href="tel:+12702303709">270-230-3709</a><br/>
-            ✉️ Email: <a href="mailto:Dannykennemore@icloud.com">Dannykennemore@icloud.com</a><br/>
-            ▶️ YouTube: <a target="_blank" rel="noreferrer" href="https://youtube.com/@budgetprintalchemy?si=FzB2oFeSDMkH3RhY">@budgetprintalchemy</a><br/>
-            🎵 TikTok: <a target="_blank" rel="noreferrer" href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J">@dannykennemore</a>
-          </div>
-        </div>
+      <div>
+        📱 Text: <strong>270-230-3709</strong><br>
+        📧 Dannykennemore@icloud.com
       </div>
-
-      <div style="margin-top:12px; opacity:.65;">
-        © <span id="yr"></span> Budget Print Alchemy
+      <div>
+        Built for speed • Proof first • No pressure
       </div>
     </footer>
+
   </div>
-
-  <!-- ONE sticky CTA using your Goku image -->
-  <a class="stickyText"
-     href="sms:+12702303709?&body=Hey%20Danny!%20I%20need%20a%20quote%20for%20a%203D%20print.%20Here%E2%80%99s%20what%20I%20need%3A%20">
-    <img src="assets/photos/Screenshot_20260107-233534~2.png" alt="Text Danny">
-    Text Danny
-  </a>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox">
-    <div class="lbInner">
-      <button class="lbClose" id="lbClose">✕</button>
-      <img id="lbImg" src="" alt="Preview" />
-    </div>
-  </div>
-
-  <script>
-    document.getElementById("yr").textContent = new Date().getFullYear();
-
-    // Quote form -> opens email to Danny with content prefilled
-    document.getElementById("quoteForm").addEventListener("submit", function(e){
-      e.preventDefault();
-      const data = new FormData(e.target);
-
-      const name = data.get("name") || "";
-      const phone = data.get("phone") || "";
-      const details = data.get("details") || "";
-      const pref = data.get("pref") || "Text";
-      const budget = data.get("budget") || "";
-
-      const subject = encodeURIComponent("Quote Request — Budget Print Alchemy");
-      const body = encodeURIComponent(
-        `Name: ${name}\n` +
-        `Phone: ${phone}\n` +
-        `Preferred contact: ${pref}\n` +
-        `Budget: ${budget}\n\n` +
-        `Details:\n${details}\n`
-      );
-
-      window.location.href = `mailto:Dannykennemore@icloud.com?subject=${subject}&body=${body}`;
-    });
-
-    // Lightbox for gallery
-    const lightbox = document.getElementById("lightbox");
-    const lbImg = document.getElementById("lbImg");
-    const lbClose = document.getElementById("lbClose");
-
-    document.querySelectorAll(".shot").forEach(card=>{
-      card.addEventListener("click", ()=>{
-        const full = card.getAttribute("data-full");
-        lbImg.src = full;
-        lightbox.classList.add("open");
-      });
-    });
-
-    lbClose.addEventListener("click", ()=> lightbox.classList.remove("open"));
-    lightbox.addEventListener("click", (e)=>{
-      if(e.target === lightbox) lightbox.classList.remove("open");
-    });
-  </script>
 </body>
 </html>
