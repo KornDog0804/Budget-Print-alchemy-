@@ -1,219 +1,540 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Budget Print Alchemy</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Budget Print Alchemy</title>
+  <meta name="description" content="Budget Print Alchemy — custom 3D printing, progress builds, and real proof. Text for fast quotes." />
 
-<style>
-:root {
-  --orange:#f57c00;
-  --blue:#1976d2;
-  --aura:#00e5ff;
-  --bg:#05070c;
-  --panel:#0f1624;
-  --text:#e6edf3;
-  --muted:#9aa4b2;
-}
+  <style>
+    :root{
+      --bg0:#06070c;
+      --bg1:#0b1020;
+      --card:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.12);
 
-* { box-sizing:border-box; margin:0; padding:0; }
+      --orange:#F57C00;  /* Goku orange */
+      --blue:#1976D2;    /* Goku blue */
+      --aura:#FFB300;    /* aura gold */
 
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(circle at top, #142033, var(--bg));
-  color: var(--text);
-}
+      --ink:#EAF2FF;
+      --muted:rgba(234,242,255,.72);
 
-a { color: inherit; text-decoration:none; }
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --radius: 18px;
+    }
 
-header {
-  display:flex;
-  align-items:center;
-  gap:20px;
-  padding:28px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 500px at 10% 10%, rgba(25,118,210,.35), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(245,124,0,.28), transparent 60%),
+        radial-gradient(700px 500px at 50% 100%, rgba(255,179,0,.20), transparent 65%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height:100vh;
+    }
 
-header img { height:64px; }
-header h1 { font-size:1.9rem; }
-header span { color:var(--orange); }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1120px; margin:0 auto; padding:26px 16px 90px}
 
-.hero {
-  padding:90px 30px;
-  text-align:center;
-  background: radial-gradient(circle at center, rgba(0,229,255,.18), transparent 60%);
-}
+    /* Top bar */
+    .top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:10px 4px;
+    }
+    .brand{display:flex; align-items:center; gap:12px;}
+    .logo{
+      width:56px; height:56px; border-radius:14px;
+      background:linear-gradient(135deg, rgba(245,124,0,.25), rgba(25,118,210,.25));
+      border:1px solid var(--stroke);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:grid; place-items:center;
+    }
+    .logo img{width:100%; height:100%; object-fit:cover; display:block}
+    .brand h1{margin:0; font-size:18px; letter-spacing:.5px}
+    .brand p{margin:2px 0 0; color:var(--muted); font-size:12px}
 
-.hero h2 {
-  font-size:clamp(2rem,4vw,3.2rem);
-  margin-bottom:20px;
-}
+    .pillRow{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    .pill{
+      padding:10px 12px; border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      display:flex; align-items:center; gap:8px;
+      transition:.15s transform ease, .15s background ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      font-weight:700; font-size:13px;
+    }
+    .pill:hover{transform:translateY(-1px); background:rgba(255,255,255,.07)}
+    .dot{
+      width:10px; height:10px; border-radius:999px;
+      background:linear-gradient(135deg, var(--orange), var(--aura), var(--blue));
+      box-shadow: 0 0 0 4px rgba(255,179,0,.14), 0 0 18px rgba(255,179,0,.35);
+    }
 
-.hero p {
-  max-width:720px;
-  margin:0 auto 40px;
-  color:var(--muted);
-  font-size:1.1rem;
-}
+    /* Hero */
+    .hero{
+      margin-top:14px;
+      border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .heroInner{
+      padding:22px 18px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    @media (max-width: 880px){ .heroInner{grid-template-columns:1fr} }
 
-.textMe {
-  display:inline-flex;
-  align-items:center;
-  gap:18px;
-  padding:20px 28px;
-  border-radius:16px;
-  background: linear-gradient(135deg, var(--blue), var(--orange));
-  box-shadow:
-    0 0 45px rgba(0,229,255,.45),
-    0 0 90px rgba(245,124,0,.35);
-  font-weight:800;
-  font-size:1.2rem;
-  transition:.25s ease;
-}
+    .hero h2{
+      margin:0 0 10px;
+      font-size:34px; line-height:1.08;
+      letter-spacing:-.5px;
+    }
+    .hero h2 span{
+      background:linear-gradient(90deg, var(--orange), var(--aura), var(--blue));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+    .hero p{margin:0 0 14px; color:var(--muted); font-size:15px; line-height:1.5}
 
-.textMe:hover {
-  transform:scale(1.06);
-  box-shadow:
-    0 0 70px rgba(0,229,255,.85),
-    0 0 140px rgba(245,124,0,.7);
-}
+    .ctaRow{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px;}
+    .btn{
+      border:none; cursor:pointer;
+      padding:12px 14px;
+      border-radius:14px;
+      font-weight:900;
+      letter-spacing:.2px;
+      display:inline-flex; align-items:center; gap:10px;
+      transition:.15s transform ease, .15s filter ease;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+    }
+    .btn:hover{transform:translateY(-1px); filter:brightness(1.05)}
+    .btnPrimary{color:#0b1020; background:linear-gradient(135deg, var(--aura), var(--orange));}
+    .btnBlue{color:white; background:linear-gradient(135deg, var(--blue), rgba(25,118,210,.65));}
+    .btnGhost{color:var(--ink); background:rgba(255,255,255,.06); border:1px solid var(--stroke); box-shadow:none;}
 
-.textMe img { height:82px; }
+    .card{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      border-radius:var(--radius);
+      padding:16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.28);
+    }
 
-section {
-  padding:80px 30px;
-  max-width:1200px;
-  margin:0 auto;
-}
+    /* Quote form */
+    .formGrid{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    @media (max-width: 640px){ .formGrid{grid-template-columns:1fr} }
 
-section h3 {
-  font-size:2.2rem;
-  margin-bottom:10px;
-  color:var(--orange);
-}
+    label{display:block; font-size:12px; color:var(--muted); margin:8px 0 6px}
+    input, textarea, select{
+      width:100%;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--stroke);
+      color:var(--ink);
+      padding:12px 12px;
+      border-radius:12px;
+      outline:none;
+    }
+    textarea{min-height:110px; resize:vertical}
+    .fine{font-size:12px; color:rgba(234,242,255,.62); line-height:1.35; margin-top:10px}
 
-section p {
-  color:var(--muted);
-  max-width:720px;
-  margin-bottom:35px;
-}
+    /* Section head */
+    .section{margin-top:18px}
+    .sectionHead{
+      display:flex; align-items:end; justify-content:space-between; gap:12px;
+      margin: 18px 0 10px;
+    }
+    .sectionHead h3{margin:0; font-size:18px}
+    .sectionHead p{margin:0; color:var(--muted); font-size:12px}
 
-/* SCROLL GALLERY */
-.scrollGallery {
-  display:flex;
-  gap:18px;
-  overflow-x:auto;
-  padding-bottom:10px;
-  scrollbar-width:thin;
-}
+    /* Video sections */
+    .videoGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    @media (max-width: 980px){ .videoGrid{grid-template-columns:1fr} }
 
-.scrollGallery img {
-  height:260px;
-  border-radius:14px;
-  box-shadow:0 12px 30px rgba(0,0,0,.6);
-  transition:.25s ease;
-}
+    .videoCard{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      border-radius:var(--radius);
+      overflow:hidden;
+      position:relative;
+      box-shadow: 0 14px 44px rgba(0,0,0,.35);
+    }
+    .videoGlow{
+      position:absolute; inset:-2px;
+      background:radial-gradient(400px 250px at 20% 20%, rgba(245,124,0,.35), transparent 60%),
+                 radial-gradient(400px 250px at 80% 25%, rgba(25,118,210,.35), transparent 60%);
+      opacity:.55; pointer-events:none;
+      filter: blur(10px);
+    }
+    iframe{
+      width:100%;
+      height:320px;
+      border:0;
+      display:block;
+      background:#000;
+    }
 
-.scrollGallery img:hover {
-  transform:scale(1.05);
-}
+    /* Gallery (horizontal scroll + snap) */
+    .galleryBar{
+      display:flex;
+      gap:12px;
+      overflow-x:auto;
+      padding: 10px 6px 14px;
+      scroll-snap-type:x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .galleryBar::-webkit-scrollbar{height:10px}
+    .galleryBar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18); border-radius:999px;}
 
-/* VIDEO SECTIONS */
-.videoGrid {
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
-  gap:30px;
-}
+    .shot{
+      flex:0 0 auto;
+      width:240px;
+      border-radius:16px;
+      overflow:hidden;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.03);
+      box-shadow: 0 14px 44px rgba(0,0,0,.35);
+      scroll-snap-align:start;
+      cursor:pointer;
+      position:relative;
+    }
+    .shot img{width:100%; height:180px; object-fit:cover; display:block;}
+    .shot .cap{padding:10px 10px 12px; color:rgba(234,242,255,.72); font-size:12px;}
+    .shot::after{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,.35));
+      pointer-events:none;
+      opacity:.65;
+    }
 
-.videoCard {
-  background:var(--panel);
-  border-radius:18px;
-  padding:18px;
-  box-shadow:0 12px 30px rgba(0,0,0,.5);
-}
+    /* Lightbox */
+    .lightbox{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,.86);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      z-index:9999;
+    }
+    .lightbox.open{display:flex}
+    .lbInner{
+      width:min(1100px, 96vw);
+      height:min(80vh, 720px);
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(10,12,20,.65);
+      box-shadow: 0 20px 80px rgba(0,0,0,.6);
+      position:relative;
+    }
+    .lbInner img{
+      width:100%; height:100%; object-fit:contain; display:block;
+      background:rgba(0,0,0,.45);
+    }
+    .lbClose{
+      position:absolute; top:10px; right:10px;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.16);
+      color:white;
+      border-radius:999px;
+      padding:10px 12px;
+      font-weight:1000;
+      cursor:pointer;
+    }
 
-.videoCard iframe {
-  width:100%;
-  aspect-ratio:16/9;
-  border-radius:12px;
-  border:none;
-}
-
-footer {
-  text-align:center;
-  padding:40px;
-  border-top:1px solid rgba(255,255,255,.08);
-  color:var(--muted);
-  font-size:.9rem;
-}
-</style>
+    /* Sticky SMS button using your Goku image */
+    .stickyText{
+      position:fixed;
+      right:14px;
+      bottom:14px;
+      z-index:999;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:999px;
+      background:linear-gradient(135deg, rgba(25,118,210,.95), rgba(245,124,0,.90));
+      color:#0b1020;
+      font-weight:1000;
+      box-shadow: 0 16px 60px rgba(0,0,0,.55);
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .stickyText img{
+      width:34px; height:34px; object-fit:cover;
+      border-radius:999px;
+      border:2px solid rgba(255,255,255,.35);
+      background:rgba(255,255,255,.1);
+    }
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
+    <!-- Top -->
+    <div class="top">
+      <div class="brand">
+        <div class="logo">
+          <img src="assets/photos/IMG_20260107_225428.jpg" alt="Budget Print Alchemy logo">
+        </div>
+        <div>
+          <h1>Budget Print Alchemy</h1>
+          <p>Custom prints • Progress builds • Real proof, real fast</p>
+        </div>
+      </div>
 
-<header>
-  <img src="assets/photos/IMG_20260107_225428.jpg">
-  <h1>Budget <span>Print</span> Alchemy</h1>
-</header>
+      <div class="pillRow">
+        <a class="pill" href="tel:+12702303709"><span class="dot"></span> Call</a>
+        <a class="pill" href="sms:+12702303709?&body=Hey%20Danny!%20I%20saw%20Budget%20Print%20Alchemy%20and%20need%20a%20quick%20quote.%20"><span class="dot"></span> Text</a>
+        <a class="pill" href="mailto:Dannykennemore@icloud.com"><span class="dot"></span> Email</a>
+      </div>
+    </div>
 
-<div class="hero">
-  <h2>From Raw Print to Finished Power</h2>
-  <p>
-    Functional parts, detailed figures, and real-world results.
-    This is production-minded printing — not hobby fluff.
-  </p>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="heroInner">
+        <div>
+          <h2>Turn ideas into prints — <span>fast</span>.</h2>
+          <p>
+            Proof-first. No fluff. If you’ve got a file (or an idea), Danny will tell you what’s possible and what it’ll take.
+          </p>
 
-  <a
-    href="sms:+12702303709?body=Hey%20Danny%20—%20I%20saw%20your%20Budget%20Print%20Alchemy%20site%20and%20want%20a%20quote."
-    class="textMe">
-    <img src="assets/photos/Screenshot_20260107-233534~2.png">
-    Text Danny Instantly
+          <div class="ctaRow">
+            <a class="btn btnPrimary" href="#quote">⚡ Request a Quote</a>
+            <a class="btn btnBlue" href="sms:+12702303709?&body=Hey%20Danny!%20I%20want%20a%20quote%20for%20a%203D%20print.%20Here%E2%80%99s%20what%20I%20need%3A%20">📲 Text Danny</a>
+            <a class="btn btnGhost" href="#gallery">📸 See the Proof</a>
+          </div>
+
+          <p class="fine">
+            Fastest start: text a screenshot/link + the rough size you want.
+          </p>
+        </div>
+
+        <!-- Quote form (mailto) -->
+        <div class="card" id="quote">
+          <div class="sectionHead" style="margin:0 0 8px;">
+            <h3>Request a Quote</h3>
+            <p>Emails Danny</p>
+          </div>
+
+          <form id="quoteForm">
+            <div class="formGrid">
+              <div>
+                <label>Your name</label>
+                <input name="name" placeholder="Your name" required />
+              </div>
+              <div>
+                <label>Your phone (optional)</label>
+                <input name="phone" placeholder="270-xxx-xxxx" />
+              </div>
+            </div>
+
+            <label>What do you want printed?</label>
+            <textarea name="details" placeholder="Example: Figure/part, approx size, strength needs, finish preference..." required></textarea>
+
+            <div class="formGrid">
+              <div>
+                <label>Preferred contact</label>
+                <select name="pref">
+                  <option>Email</option>
+                  <option>Text</option>
+                  <option>Call</option>
+                </select>
+              </div>
+              <div>
+                <label>Budget range (optional)</label>
+                <input name="budget" placeholder="$50 / $100 / $200..." />
+              </div>
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;">
+              <button class="btn btnPrimary" type="submit">Send Quote Request</button>
+              <a class="btn btnGhost" href="mailto:Dannykennemore@icloud.com">Email directly</a>
+            </div>
+
+            <p class="fine">
+              If you have an STL/link, texting it is quickest. Email is best for longer details.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section class="section" id="gallery">
+      <div class="sectionHead">
+        <h3>Proof Gallery</h3>
+        <p>Swipe → tap any photo to zoom</p>
+      </div>
+
+      <div class="card" style="padding:10px 10px 2px;">
+        <div class="galleryBar" id="galleryBar">
+          <div class="shot" data-full="assets/photos/IMG_20260107_225431.png"><img src="assets/photos/IMG_20260107_225431.png" alt="Brand image" /><div class="cap">Logo / brand</div></div>
+
+          <div class="shot" data-full="assets/photos/IMG_20260107_225439.jpg"><img src="assets/photos/IMG_20260107_225439.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225442.jpg"><img src="assets/photos/IMG_20260107_225442.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225444.jpg"><img src="assets/photos/IMG_20260107_225444.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225447.jpg"><img src="assets/photos/IMG_20260107_225447.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225450.jpg"><img src="assets/photos/IMG_20260107_225450.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225453.jpg"><img src="assets/photos/IMG_20260107_225453.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225456.jpg"><img src="assets/photos/IMG_20260107_225456.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225458.jpg"><img src="assets/photos/IMG_20260107_225458.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225501.jpg"><img src="assets/photos/IMG_20260107_225501.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225504.jpg"><img src="assets/photos/IMG_20260107_225504.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225506.jpg"><img src="assets/photos/IMG_20260107_225506.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+          <div class="shot" data-full="assets/photos/IMG_20260107_225509.jpg"><img src="assets/photos/IMG_20260107_225509.jpg" alt="Progress shot" /><div class="cap">Progress shot</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- YouTube -->
+    <section class="section" id="youtube">
+      <div class="sectionHead">
+        <h3>YouTube</h3>
+        <p>Depth + trust (unboxings, walkthroughs)</p>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+        <a class="btn btnBlue" href="https://youtube.com/@budgetprintalchemy?si=FzB2oFeSDMkH3RhY" target="_blank" rel="noreferrer">▶ Visit YouTube Channel</a>
+        <a class="btn btnGhost" href="https://youtube.com/@budgetprintalchemy?si=FzB2oFeSDMkH3RhY" target="_blank" rel="noreferrer">Subscribe</a>
+      </div>
+
+      <div class="videoGrid">
+        <div class="videoCard">
+          <div class="videoGlow"></div>
+          <iframe src="https://www.youtube.com/embed/MyxBh3nwMuo" allowfullscreen></iframe>
+        </div>
+        <div class="videoCard">
+          <div class="videoGlow"></div>
+          <iframe src="https://www.youtube.com/embed/1kgHg9cRNi0" allowfullscreen></iframe>
+        </div>
+        <div class="videoCard">
+          <div class="videoGlow"></div>
+          <iframe src="https://www.youtube.com/embed/xQkcKYej1Qg" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <p class="fine">
+        Want “newest videos” + “LIVE NOW” to auto-show? That needs a YouTube API key + channel ID.
+        If Danny wants it, we’ll wire it in (and keep these as a fallback).
+      </p>
+    </section>
+
+    <!-- TikTok -->
+    <section class="section" id="tiktok">
+      <div class="sectionHead">
+        <h3>TikTok</h3>
+        <p>Momentum + daily proof</p>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;">
+        <a class="btn btnPrimary" href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J" target="_blank" rel="noreferrer">♪ Visit TikTok Profile</a>
+      </div>
+
+      <div class="videoGrid">
+        <div class="videoCard" style="grid-column:1 / -1">
+          <div class="videoGlow"></div>
+          <iframe src="https://www.tiktok.com/embed/@dannykennemore" height="650" allowfullscreen></iframe>
+        </div>
+      </div>
+
+      <p class="fine">
+        TikTok doesn’t offer a reliable static “auto newest feed” without third-party widgets/backends.
+        This profile embed is the cleanest + most stable.
+      </p>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact">
+      <div class="sectionHead">
+        <h3>Contact</h3>
+        <p>Fastest response = text</p>
+      </div>
+
+      <div class="card">
+        <p style="margin:0; color:var(--muted); line-height:1.7">
+          📲 Text: <b><a href="sms:+12702303709">270-230-3709</a></b><br>
+          📞 Call: <b><a href="tel:+12702303709">270-230-3709</a></b><br>
+          ✉️ Email: <b><a href="mailto:Dannykennemore@icloud.com">Dannykennemore@icloud.com</a></b><br>
+          ▶️ YouTube: <b><a href="https://youtube.com/@budgetprintalchemy?si=FzB2oFeSDMkH3RhY" target="_blank" rel="noreferrer">@budgetprintalchemy</a></b><br>
+          ♪ TikTok: <b><a href="https://www.tiktok.com/@dannykennemore?_r=1&_t=ZT-92tOY5Ypp8J" target="_blank" rel="noreferrer">@dannykennemore</a></b>
+        </p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Sticky SMS button using your Goku image -->
+  <a class="stickyText"
+     href="sms:+12702303709?&body=Hey%20Danny!%20I%20need%20a%20quote%20for%20a%203D%20print.%20Here%E2%80%99s%20what%20I%20need%3A%20">
+    <img src="assets/photos/Screenshot_20260107-233534~2.png" alt="Text Danny">
+    Text Danny
   </a>
-</div>
 
-<section>
-  <h3>Proof of Work</h3>
-  <p>Scroll through real prints, real test fits, and real progress.</p>
-
-  <div class="scrollGallery">
-    <img src="assets/photos/IMG_20260107_225439.jpg">
-    <img src="assets/photos/IMG_20260107_225442.jpg">
-    <img src="assets/photos/IMG_20260107_225444.jpg">
-    <img src="assets/photos/IMG_20260107_225447.jpg">
-    <img src="assets/photos/IMG_20260107_225450.jpg">
-    <img src="assets/photos/IMG_20260107_225453.jpg">
-    <img src="assets/photos/IMG_20260107_225456.jpg">
-    <img src="assets/photos/IMG_20260107_225458.jpg">
-    <img src="assets/photos/IMG_20260107_225501.jpg">
-    <img src="assets/photos/IMG_20260107_225504.jpg">
-  </div>
-</section>
-
-<section>
-  <h3>YouTube</h3>
-  <p>Unboxings, print breakdowns, and process walkthroughs.</p>
-
-  <div class="videoGrid">
-    <div class="videoCard">
-      <iframe src="https://www.youtube.com/embed/xQkcKYej1Qg"></iframe>
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <div class="lbInner">
+      <button class="lbClose" id="lbClose">✕</button>
+      <img id="lbImg" src="" alt="Preview" />
     </div>
   </div>
-</section>
 
-<section>
-  <h3>TikTok</h3>
-  <p>Short-form progress clips and quick print wins.</p>
+  <script>
+    // Quote form -> opens email to Danny with content prefilled
+    document.getElementById("quoteForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      const data = new FormData(e.target);
 
-  <div class="videoGrid">
-    <div class="videoCard">
-      <iframe src="https://www.tiktok.com/embed/v2/1kgHg9cRNi0"></iframe>
-    </div>
-  </div>
-</section>
+      const name = data.get("name") || "";
+      const phone = data.get("phone") || "";
+      const details = data.get("details") || "";
+      const pref = data.get("pref") || "Email";
+      const budget = data.get("budget") || "";
 
-<footer>
-  © Budget Print Alchemy · Built for speed, quality, and repeat customers
-</footer>
+      const subject = encodeURIComponent("Quote Request — Budget Print Alchemy");
+      const body = encodeURIComponent(
+        `Name: ${name}\n` +
+        `Phone: ${phone}\n` +
+        `Preferred contact: ${pref}\n` +
+        `Budget: ${budget}\n\n` +
+        `Details:\n${details}\n`
+      );
 
+      window.location.href = `mailto:Dannykennemore@icloud.com?subject=${subject}&body=${body}`;
+    });
+
+    // Lightbox for gallery
+    const lightbox = document.getElementById("lightbox");
+    const lbImg = document.getElementById("lbImg");
+    const lbClose = document.getElementById("lbClose");
+
+    document.querySelectorAll(".shot").forEach(card=>{
+      card.addEventListener("click", ()=>{
+        const full = card.getAttribute("data-full");
+        lbImg.src = full;
+        lightbox.classList.add("open");
+      });
+    });
+
+    lbClose.addEventListener("click", ()=> lightbox.classList.remove("open"));
+    lightbox.addEventListener("click", (e)=>{
+      if(e.target === lightbox) lightbox.classList.remove("open");
+    });
+  </script>
 </body>
 </html>
