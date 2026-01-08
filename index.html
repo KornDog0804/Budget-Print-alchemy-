@@ -318,11 +318,12 @@
 
     /* FOOTER */
     footer{
-      margin-top:18px;
-      padding:18px 8px 10px;
-      text-align:center;
-      color:var(--muted2);
-      border-top:1px solid rgba(255,255,255,.10);
+  margin-top:18px;
+  padding:22px 8px calc(22px + env(safe-area-inset-bottom));
+  text-align:center;
+  color:var(--muted2);
+  border-top:1px solid rgba(255,255,255,.10);
+  background: transparent;
     }
     footer .strong{color:var(--text);font-weight:900}
     footer .tiny{font-size:.92rem;line-height:1.5}
