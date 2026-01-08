@@ -1,0 +1,34 @@
+/* =========================
+   GOKU COLOR OVERRIDES
+   ========================= */
+
+:root {
+  /* Goku palette */
+  --g: #F57C00;   /* Goku Orange */
+  --p: #1976D2;   /* Goku Blue */
+  --aura: #FFB300;
+}
+
+/* Aura dot */
+.dot {
+  background: linear-gradient(135deg, var(--g), var(--aura)) !important;
+  box-shadow: 0 0 22px rgba(245,124,0,.55) !important;
+}
+
+/* Primary buttons */
+.btnPrimary {
+  border-color: rgba(245,124,0,.6) !important;
+  background: linear-gradient(135deg, var(--g), var(--p)) !important;
+  color: #0b0f1a !important;
+}
+
+/* Subtle glow accents */
+.glowLine {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(245,124,0,.6),
+    rgba(25,118,210,.6),
+    transparent
+  ) !important;
+}
