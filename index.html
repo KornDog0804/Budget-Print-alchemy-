@@ -1,268 +1,213 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Budget Print Alchemy — Push It Past the Limit</title>
-  <meta name="description" content="I push my 3D printer until it screams so you don’t have to. Fails, fixes, speed tests, and dumb ideas that sometimes work." />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Budget Print Alchemy</title>
 
-  <meta name="theme-color" content="#0b0f1a" />
-
+  <!-- Goku Color System -->
   <style>
-    /* =========================
-       GOKU COLOR SYSTEM
-       ========================= */
-    :root{
-      --bg:#06080d;
-      --panel:rgba(255,255,255,.05);
-      --line:rgba(255,255,255,.12);
-      --text:#eef2ff;
-      --muted:#b6c2e6;
-
-      /* Goku colors */
-      --orange:#F57C00;
-      --blue:#1976D2;
-      --aura:#FFB300;
-
-      --radius:22px;
-      --shadow:0 22px 70px rgba(0,0,0,.55);
+    :root {
+      --goku-orange: #f57c00;
+      --goku-blue: #1976d2;
+      --goku-aura: #00e5ff;
+      --dark: #0b0f14;
+      --panel: #111826;
+      --text: #e6edf3;
+      --muted: #9aa4b2;
     }
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      color:var(--text);
-      background:
-        radial-gradient(900px 520px at 10% -10%, rgba(245,124,0,.25), transparent 60%),
-        radial-gradient(820px 520px at 90% 0%, rgba(25,118,210,.25), transparent 60%),
-        linear-gradient(180deg,#05070c,#06080d);
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    a{text-decoration:none;color:inherit}
-    .wrap{max-width:1120px;margin:auto;padding:24px}
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top, #142033, #05070c);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
-    /* NAV */
-    .nav{
-      position:sticky;top:0;z-index:20;
-      backdrop-filter:blur(12px);
-      background:rgba(6,8,13,.85);
-      border-bottom:1px solid var(--line);
+    a {
+      color: inherit;
+      text-decoration: none;
     }
-    .navInner{display:flex;justify-content:space-between;align-items:center;padding:14px 24px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:42px;height:42px;border-radius:14px;
-      background:linear-gradient(135deg,var(--orange),var(--blue));
-      display:grid;place-items:center;
-      font-weight:900;color:#000;
+
+    /* HEADER */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 30px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
-    .links a{
-      margin-left:12px;
-      padding:10px 14px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      font-weight:700;
+
+    header img {
+      height: 64px;
+    }
+
+    header h1 {
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+    }
+
+    header span {
+      color: var(--goku-orange);
     }
 
     /* HERO */
-    .hero{
-      display:grid;
-      grid-template-columns:1.2fr .8fr;
-      gap:18px;
-      margin-top:22px;
-    }
-    .card{
-      background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:20px;
-    }
-    .pill{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 12px;border-radius:999px;
-      background:rgba(0,0,0,.3);
-      border:1px solid var(--line);
-      font-size:12px;color:var(--muted);
-    }
-    .dot{
-      width:10px;height:10px;border-radius:50%;
-      background:linear-gradient(135deg,var(--orange),var(--aura));
-      box-shadow:0 0 22px rgba(245,124,0,.6);
-    }
-    h1{
-      font-size:clamp(32px,5vw,54px);
-      margin:14px 0;
-      line-height:1.05;
-    }
-    .lead{color:var(--muted);max-width:65ch}
-
-    .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:16px}
-    .btn{
-      padding:12px 16px;
-      border-radius:16px;
-      font-weight:900;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-    }
-    .btnPrimary{
-      background:linear-gradient(135deg,var(--orange),var(--blue));
-      color:#0b0f1a;
-      border-color:rgba(245,124,0,.6);
+    .hero {
+      padding: 80px 30px;
+      text-align: center;
+      background:
+        radial-gradient(circle at center, rgba(0,229,255,.15), transparent 60%);
     }
 
-    /* SERVICES */
-    .services{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-    .svc{
-      background:rgba(0,0,0,.25);
-      border:1px solid var(--line);
-      border-radius:18px;
-      padding:14px;
+    .hero h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      margin-bottom: 20px;
     }
-    .svc strong{display:block}
-    .svc span{font-size:12px;color:var(--muted)}
 
-    /* VIDEOS */
-    .videos{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:14px;
-      margin-top:18px;
+    .hero p {
+      max-width: 720px;
+      margin: 0 auto 40px;
+      color: var(--muted);
+      font-size: 1.1rem;
     }
-    .video{
-      aspect-ratio:16/9;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid var(--line);
-      background:#000;
+
+    /* TEXT ME CTA */
+    .textMeBox {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      padding: 18px 26px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--goku-blue), var(--goku-orange));
+      box-shadow:
+        0 0 40px rgba(0,229,255,.45),
+        0 0 80px rgba(245,124,0,.35);
+      font-size: 1.2rem;
+      font-weight: 700;
+      transition: transform .2s ease, box-shadow .2s ease;
     }
-    iframe{width:100%;height:100%;border:0}
+
+    .textMeBox:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 60px rgba(0,229,255,.8),
+        0 0 120px rgba(245,124,0,.6);
+    }
+
+    .textMeBox img {
+      height: 80px;
+      pointer-events: none;
+    }
+
+    /* SECTION */
+    section {
+      padding: 70px 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    section h3 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+      color: var(--goku-orange);
+    }
+
+    section p {
+      color: var(--muted);
+      max-width: 700px;
+      margin-bottom: 40px;
+    }
 
     /* GALLERY */
-    .gallery{
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:12px;
-      margin-top:16px;
-    }
-    .shot{
-      aspect-ratio:1/1;
-      border-radius:18px;
-      background:rgba(0,0,0,.3);
-      border:1px solid var(--line);
-      display:grid;place-items:center;
-      font-weight:800;color:var(--muted);
-      text-align:center;padding:12px;
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
     }
 
-    /* CONTACT */
-    form{display:grid;gap:10px;margin-top:12px}
-    input,textarea{
-      padding:12px;border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.35);
-      color:var(--text);
+    .gallery img {
+      width: 100%;
+      border-radius: 14px;
+      background: #000;
+      box-shadow: 0 10px 30px rgba(0,0,0,.6);
+      transition: transform .25s ease;
     }
 
-    footer{text-align:center;color:var(--muted);font-size:12px;margin-top:28px}
-
-    @media(max-width:900px){
-      .hero{grid-template-columns:1fr}
-      .videos{grid-template-columns:1fr}
-      .gallery{grid-template-columns:1fr 1fr}
-      .services{grid-template-columns:1fr}
+    .gallery img:hover {
+      transform: scale(1.04);
     }
-    @media(max-width:500px){
-      .gallery{grid-template-columns:1fr}
+
+    /* FOOTER */
+    footer {
+      padding: 40px 30px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,.08);
+      color: var(--muted);
+      font-size: .9rem;
     }
   </style>
 </head>
 
 <body>
-  <div class="nav">
-    <div class="navInner">
-      <div class="brand">
-        <div class="logo">BPA</div>
-        <strong>Budget Print Alchemy</strong>
-      </div>
-      <div class="links">
-        <a href="#videos">Videos</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </div>
+
+  <!-- HEADER -->
+  <header>
+    <img src="assets/photos/IMG_20260107_225428.jpg" alt="Budget Print Alchemy Logo" />
+    <h1>Budget <span>Print</span> Alchemy</h1>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h2>Turning Raw Prints Into Finished Power</h2>
+    <p>
+      Functional parts. Detailed figures. Clean finishes.
+      This isn’t hobby printing — it’s production-ready work done right.
+    </p>
+
+    <a
+      href="sms:+12702303709?body=Hey%20Danny%20%E2%80%94%20I%20saw%20your%20Budget%20Print%20Alchemy%20site%20and%20want%20a%20quick%20quote."
+      class="textMeBox"
+      aria-label="Text Budget Print Alchemy"
+    >
+      <img src="assets/photos/Screenshot_20260107-233534~2.png" alt="Text Me" />
+      Text Danny for a Quote
+    </a>
   </div>
 
-  <main class="wrap">
-    <section class="hero">
-      <div class="card">
-        <div class="pill"><span class="dot"></span> Push it past the limit</div>
-        <h1>I push my 3D printer until it screams<br>so you don’t have to.</h1>
-        <p class="lead">
-          Fails, fixes, speed tests, and dumb ideas that sometimes work.
-          Need a print? Need help? This is where it happens.
-        </p>
+  <!-- PROOF SECTION -->
+  <section>
+    <h3>Real Prints. Real Progress.</h3>
+    <p>
+      From raw test fits to finished assemblies — this is the process.
+      No stock photos. No fluff. Just work.
+    </p>
 
-        <div class="btns">
-          <a class="btn btnPrimary" href="https://www.youtube.com/@BudgetPrintAlchemy" target="_blank">▶ Watch on YouTube</a>
-          <a class="btn" href="#contact">🧾 Request a Quote</a>
-        </div>
+    <div class="gallery">
+      <img src="assets/photos/IMG_20260107_225439.jpg" />
+      <img src="assets/photos/IMG_20260107_225442.jpg" />
+      <img src="assets/photos/IMG_20260107_225444.jpg" />
+      <img src="assets/photos/IMG_20260107_225447.jpg" />
+      <img src="assets/photos/IMG_20260107_225450.jpg" />
+      <img src="assets/photos/IMG_20260107_225453.jpg" />
+      <img src="assets/photos/IMG_20260107_225456.jpg" />
+      <img src="assets/photos/IMG_20260107_225458.jpg" />
+      <img src="assets/photos/IMG_20260107_225501.jpg" />
+      <img src="assets/photos/IMG_20260107_225504.jpg" />
+      <img src="assets/photos/IMG_20260107_225506.jpg" />
+      <img src="assets/photos/IMG_20260107_225509.jpg" />
+    </div>
+  </section>
 
-        <div class="services">
-          <div class="svc"><strong>Custom Prints</strong><span>PLA / PETG / TPU</span></div>
-          <div class="svc"><strong>Printer Tuning</strong><span>Slicer & speed dialing</span></div>
-          <div class="svc"><strong>Fails & Fixes</strong><span>Real-world troubleshooting</span></div>
-          <div class="svc"><strong>Small Batch</strong><span>Repeat part runs</span></div>
-        </div>
-      </div>
+  <!-- FOOTER -->
+  <footer>
+    © Budget Print Alchemy · Built for speed, quality, and repeat business
+  </footer>
 
-      <div class="card">
-        <h3>Featured Videos</h3>
-        <div id="videos" class="videos">
-          <div class="video">
-            <iframe src="https://www.youtube.com/embed/MyxBh3nwMuo" allowfullscreen></iframe>
-          </div>
-          <div class="video">
-            <iframe src="https://www.youtube.com/embed/1kgHg9cRNi0" allowfullscreen></iframe>
-          </div>
-          <div class="video">
-            <iframe src="https://www.youtube.com/embed/xQkcKYej1Qg" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="card" style="margin-top:18px">
-      <h3>Gallery</h3>
-      <div class="gallery">
-        <div class="shot">Speed Tests</div>
-        <div class="shot">Print Fails</div>
-        <div class="shot">Dialed Profiles</div>
-        <div class="shot">Benchies</div>
-        <div class="shot">Weird Stuff</div>
-        <div class="shot">Custom Jobs</div>
-      </div>
-    </section>
-
-    <section id="contact" class="card" style="margin-top:18px">
-      <h3>Request a Quote</h3>
-      <form name="quote" method="POST" data-netlify="true">
-        <input type="hidden" name="form-name" value="quote">
-        <input name="name" placeholder="Your name" required>
-        <input name="email" type="email" placeholder="Your email" required>
-        <textarea name="details" placeholder="What do you need printed or fixed?"></textarea>
-        <button class="btn btnPrimary" type="submit">Send Request</button>
-      </form>
-    </section>
-
-    <footer>
-      © <span id="y"></span> Budget Print Alchemy • Super Saiyan Mode
-    </footer>
-  </main>
-
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>
